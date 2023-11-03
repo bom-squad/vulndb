@@ -40,7 +40,7 @@ class OSV:
 
     @cached_property
     def _gcs(self) -> storage.Client:
-        return storage.Client(project="devstartup")
+        return storage.Client()
 
     def all(self, ecosystem: str) -> Generator[OpenSSF, None, None]:
         gcs = self._gcs

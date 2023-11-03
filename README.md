@@ -8,9 +8,12 @@ may evolve to incorporate additional datasets, or serve further use cases as we 
 
 ## Pre-requisites
 
-1. You will need a gcloud account as you must provide a quote project to access OSV data files
-2. You will need postgresql installed, with a database, and role created that ows it
-3. You will need poetry and poethepoet installed to build and experimement with the python API
+1. You will need a postgres database installed. See 'admin' CLI commands below to provision
+   or generate provisioning SQL commands based on the database configuration. If you are running as
+   a user with administrative database privileges to a local db instance, and you have configured
+   username, password, and datbase in an active vulndb configuration, the quick start command is 'vulndb admin create_all'.
+2. You will need poetry and poethepoet installed to build from source. pyenv or another environment
+   manager is recommended.
 3. You may optionally acquire an API key for the National Vulnerability Database
 
 ## Installation
@@ -24,6 +27,83 @@ $ sql -U <username> -d <database> -a -f db/create.sql
 ## CLI
 
 The vulndb cli exposes the following commands:
+
+### admin
+
+#### create_all
+
+```
+$ vulndb admin create_all --help
+
+ Usage: vulndb admin create_all [OPTIONS]
+
+ Create schema, tables, indices, and user for active configuration.
+
+╭─ Options ────────────────────────────────────╮
+│ --help          Show this message and exit.  │
+╰──────────────────────────────────────────────╯
+```
+
+#### create_db
+
+```
+$ vulndb admin create_db --help
+
+ Usage: vulndb admin create_db [OPTIONS]
+
+ Create database for active configuration.
+
+╭─ Options ───────────────────────────────────────────────────────────────────╮
+│ --show-only    Show script, but do not execute      [default: no-show-only] │
+│ --help         Show this message and exit.                                  │
+╰─────────────────────────────────────────────────────────────────────────────╯
+```
+
+#### create_tables
+
+```
+$ vulndb admin create_tables --help
+
+ Usage: vulndb admin create_tables [OPTIONS]
+
+ Create tables and indiciates for active configuration.
+
+╭─ Options ───────────────────────────────────────────────────────────────────╮
+│ --show-only    Show script, but do not execute      [default: no-show-only] │
+│ --help         Show this message and exit.                                  │
+╰─────────────────────────────────────────────────────────────────────────────╯
+```
+
+#### create_user
+
+```
+$ vulndb admin create_user --help
+
+ Usage: vulndb admin create_user [OPTIONS]
+
+ Create user for active configuration.
+
+╭─ Options ───────────────────────────────────────────────────────────────────╮
+│ --show-only    Show script, but do not execute      [default: no-show-only] │
+│ --help         Show this message and exit.                                  │
+╰─────────────────────────────────────────────────────────────────────────────╯
+```
+
+#### drop_all
+
+```
+$ vulndb admin drop_all --help
+
+ Usage: vulndb admin drop_all [OPTIONS]
+
+ Drop schema, tables, indices, and user for active configuration.
+
+╭─ Options ───────────────────────────────────────────────────────────────────╮
+│ --show-only    Show script, but do not execute      [default: no-show-only] │
+│ --help         Show this message and exit.                                  │
+╰─────────────────────────────────────────────────────────────────────────────╯
+```
+
 
 ### nvd
 
@@ -96,4 +176,30 @@ associated identifiers, and affected version ranges.
 ╭─ Options ─────────────────────────────────────╮
 │ --help          Show this message and exit.   │
 ╰───────────────────────────────────────────────╯
+```
+
+## Testing
+
+There are currently two test suites: Unit and Data Validation.
+
+### Unit Tests
+
+The Unit Test Suite covers (mostly) isolated component tests. A fixture creates a
+test dataset, loads it from examples in the tests/example directory hierarchy, and
+drops the test database after the test suite executes.
+
+Polyfactory is used for mock data object generation. Factories in use are defined in
+tests/factory.py.
+
+```
+$ poetry run poe unit_test
+```
+
+### Data Validation
+
+The Data Validation Suite iterates through an entire active data set and materializes
+each record to ensure that all active entries are compatible with defined schemata.
+
+```
+$ poetry run poe data_validation_test
 ```

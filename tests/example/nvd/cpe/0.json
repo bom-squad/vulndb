@@ -1,0 +1,25 @@
+{
+    "refs": [
+      {
+        "ref": "https://www.ibm.com/support/pages/node/7001681",
+        "type": "Advisory"
+      },
+      {
+        "ref": "https://www.ibm.com/docs/en/cics-tx",
+        "type": "Product"
+      }
+    ],
+    "titles": [
+      {
+        "lang": "en",
+        "title": "IBM CICS TX 10.1 Advanced Edition"
+      }
+    ],
+    "cpeName": "cpe:2.3:a:ibm:cics_tx:10.1:*:*:*:advanced:*:*:*",
+    "created": "2023-10-31T15:21:10.153000",
+    "cpeNameId": "f8b9bd61-3da4-4cbd-9185-f94c860ad3ba",
+    "deprecated": false,
+    "deprecates": [],
+    "deprecatedBy": [],
+    "lastModified": "2023-10-31T15:21:10.153000"
+  }

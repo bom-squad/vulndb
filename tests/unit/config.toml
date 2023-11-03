@@ -1,0 +1,5 @@
+[vulndb]
+database = 'test_vulndb'
+username = 'test_username'
+password = 'test_password'
+request_delay = 5

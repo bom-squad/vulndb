@@ -15,7 +15,6 @@ class Ingest:
     def cve(
         cls,
         offset: int = 0,
-        limit: Optional[int] = None,
         last_mod_start_date: Optional[datetime] = None,
     ) -> None:
         api = NVD()
@@ -26,7 +25,6 @@ class Ingest:
     def cpe(
         cls,
         offset: int = 0,
-        limit: Optional[int] = None,
         last_mod_start_date: Optional[datetime] = None,
     ) -> None:
         api = NVD()

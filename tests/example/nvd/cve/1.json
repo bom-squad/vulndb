@@ -1,0 +1,78 @@
+{
+    "id": "CVE-2023-42488",
+    "metrics": {
+      "cvssMetricV2": [],
+      "cvssMetricV30": [],
+      "cvssMetricV31": [
+        {
+          "type": "Secondary",
+          "source": "cna@cyber.gov.il",
+          "cvssData": {
+            "scope": "UNCHANGED",
+            "version": "3.1",
+            "baseScore": 7.5,
+            "attackVector": "NETWORK",
+            "baseSeverity": "HIGH",
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+            "modifiedScope": null,
+            "temporalScore": null,
+            "integrityImpact": "NONE",
+            "userInteraction": "NONE",
+            "attackComplexity": "LOW",
+            "remediationLevel": null,
+            "reportConfidence": null,
+            "temporalSeverity": null,
+            "availabilityImpact": "NONE",
+            "environmentalScore": null,
+            "privilegesRequired": "NONE",
+            "exploitCodeMaturity": null,
+            "integrityRequirement": null,
+            "modifiedAttackVector": null,
+            "confidentialityImpact": "HIGH",
+            "environmentalSeverity": null,
+            "availabilityRequirement": null,
+            "modifiedIntegrityImpact": null,
+            "modifiedUserInteraction": null,
+            "modifiedAttackComplexity": null,
+            "confidentialityRequirement": null,
+            "modifiedAvailabilityImpact": null,
+            "modifiedPrivilegesRequired": null,
+            "modifiedConfidentialityImpact": null
+          },
+          "impactScore": 3.6,
+          "exploitabilityScore": 3.9
+        }
+      ]
+    },
+    "published": "2023-10-25T18:17:31.180000",
+    "references": [
+      {
+        "url": "https://www.gov.il/en/Departments/faq/cve_advisories",
+        "tags": null,
+        "source": "cna@cyber.gov.il"
+      }
+    ],
+    "vulnStatus": "Awaiting Analysis",
+    "weaknesses": [
+      {
+        "type": "Primary",
+        "source": "cna@cyber.gov.il",
+        "description": [
+          {
+            "lang": "en",
+            "value": "CWE-22"
+          }
+        ]
+      }
+    ],
+    "descriptions": [
+      {
+        "lang": "en",
+        "value": " EisBaer Scada - CWE-22: Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')"
+      }
+    ],
+    "lastModified": "2023-10-25T20:32:16.527000",
+    "configurations": [],
+    "vendorComments": [],
+    "sourceIdentifier": "cna@cyber.gov.il"
+  }

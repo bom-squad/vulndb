@@ -1,0 +1,563 @@
+{
+    "id": "CVE-2023-4863",
+    "metrics": {
+      "cvssMetricV2": [],
+      "cvssMetricV30": [],
+      "cvssMetricV31": [
+        {
+          "type": "Primary",
+          "source": "nvd@nist.gov",
+          "cvssData": {
+            "scope": "UNCHANGED",
+            "version": "3.1",
+            "baseScore": 8.8,
+            "attackVector": "NETWORK",
+            "baseSeverity": "HIGH",
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+            "modifiedScope": null,
+            "temporalScore": null,
+            "integrityImpact": "HIGH",
+            "userInteraction": "REQUIRED",
+            "attackComplexity": "LOW",
+            "remediationLevel": null,
+            "reportConfidence": null,
+            "temporalSeverity": null,
+            "availabilityImpact": "HIGH",
+            "environmentalScore": null,
+            "privilegesRequired": "NONE",
+            "exploitCodeMaturity": null,
+            "integrityRequirement": null,
+            "modifiedAttackVector": null,
+            "confidentialityImpact": "HIGH",
+            "environmentalSeverity": null,
+            "availabilityRequirement": null,
+            "modifiedIntegrityImpact": null,
+            "modifiedUserInteraction": null,
+            "modifiedAttackComplexity": null,
+            "confidentialityRequirement": null,
+            "modifiedAvailabilityImpact": null,
+            "modifiedPrivilegesRequired": null,
+            "modifiedConfidentialityImpact": null
+          },
+          "impactScore": 5.9,
+          "exploitabilityScore": 2.8
+        }
+      ]
+    },
+    "published": "2023-09-12T15:15:24.327000",
+    "references": [
+      {
+        "url": "http://www.openwall.com/lists/oss-security/2023/09/21/4",
+        "tags": null,
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "http://www.openwall.com/lists/oss-security/2023/09/22/1",
+        "tags": null,
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "http://www.openwall.com/lists/oss-security/2023/09/22/3",
+        "tags": null,
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "http://www.openwall.com/lists/oss-security/2023/09/22/4",
+        "tags": null,
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "http://www.openwall.com/lists/oss-security/2023/09/22/5",
+        "tags": null,
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "http://www.openwall.com/lists/oss-security/2023/09/22/6",
+        "tags": null,
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "http://www.openwall.com/lists/oss-security/2023/09/22/7",
+        "tags": null,
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "http://www.openwall.com/lists/oss-security/2023/09/22/8",
+        "tags": null,
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "http://www.openwall.com/lists/oss-security/2023/09/26/1",
+        "tags": null,
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "http://www.openwall.com/lists/oss-security/2023/09/26/7",
+        "tags": null,
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "http://www.openwall.com/lists/oss-security/2023/09/28/1",
+        "tags": null,
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "http://www.openwall.com/lists/oss-security/2023/09/28/2",
+        "tags": null,
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "http://www.openwall.com/lists/oss-security/2023/09/28/4",
+        "tags": null,
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "https://adamcaudill.com/2023/09/14/whose-cve-is-it-anyway/",
+        "tags": [
+          "Third Party Advisory"
+        ],
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "https://blog.isosceles.com/the-webp-0day/",
+        "tags": null,
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "https://bugzilla.suse.com/show_bug.cgi?id=1215231",
+        "tags": [
+          "Issue Tracking",
+          "Third Party Advisory"
+        ],
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "https://chromereleases.googleblog.com/2023/09/stable-channel-update-for-desktop_11.html",
+        "tags": [
+          "Release Notes",
+          "Vendor Advisory"
+        ],
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "https://crbug.com/1479274",
+        "tags": [
+          "Issue Tracking",
+          "Permissions Required",
+          "Vendor Advisory"
+        ],
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "https://en.bandisoft.com/honeyview/history/",
+        "tags": [
+          "Release Notes",
+          "Third Party Advisory"
+        ],
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "https://github.com/webmproject/libwebp/commit/902bc9190331343b2017211debcec8d2ab87e17a",
+        "tags": [
+          "Patch"
+        ],
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "https://github.com/webmproject/libwebp/releases/tag/v1.3.2",
+        "tags": [
+          "Release Notes"
+        ],
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "https://lists.debian.org/debian-lts-announce/2023/09/msg00015.html",
+        "tags": [
+          "Mailing List",
+          "Third Party Advisory"
+        ],
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "https://lists.debian.org/debian-lts-announce/2023/09/msg00016.html",
+        "tags": [
+          "Mailing List",
+          "Third Party Advisory"
+        ],
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "https://lists.debian.org/debian-lts-announce/2023/09/msg00017.html",
+        "tags": [
+          "Mailing List",
+          "Third Party Advisory"
+        ],
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/6T655QF7CQ3DYAMPFV7IECQYGDEUIVVT/",
+        "tags": [
+          "Mailing List",
+          "Third Party Advisory"
+        ],
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/FYYKLG6CRGEDTNRBSU26EEWAO6D6U645/",
+        "tags": [
+          "Mailing List",
+          "Third Party Advisory"
+        ],
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/KUQ7CTX3W372X3UY56VVNAHCH6H2F4X3/",
+        "tags": null,
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/OZDGWWMJREPAGKWCJKSCM4WYLANSKIFX/",
+        "tags": [
+          "Mailing List",
+          "Third Party Advisory"
+        ],
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/PYZV7TMKF4QHZ54SFJX54BDN52VHGGCX/",
+        "tags": [
+          "Mailing List",
+          "Third Party Advisory"
+        ],
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/WHOLML7N2G5KCAZXFWC5IDFFHSQS5SDB/",
+        "tags": [
+          "Mailing List",
+          "Third Party Advisory"
+        ],
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/WTRUIS3564P7ZLM2S2IH4Y4KZ327LI4I/",
+        "tags": null,
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-4863",
+        "tags": [
+          "Patch",
+          "Vendor Advisory"
+        ],
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "https://news.ycombinator.com/item?id=37478403",
+        "tags": [
+          "Exploit",
+          "Third Party Advisory"
+        ],
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "https://security-tracker.debian.org/tracker/CVE-2023-4863",
+        "tags": [
+          "Issue Tracking",
+          "Third Party Advisory"
+        ],
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "https://security.gentoo.org/glsa/202309-05",
+        "tags": [
+          "Third Party Advisory"
+        ],
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "https://security.netapp.com/advisory/ntap-20230929-0011/",
+        "tags": null,
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "https://sethmlarson.dev/security-developer-in-residence-weekly-report-16",
+        "tags": null,
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "https://stackdiary.com/critical-vulnerability-in-webp-codec-cve-2023-4863/",
+        "tags": [
+          "Exploit",
+          "Third Party Advisory"
+        ],
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "https://www.bentley.com/advisories/be-2023-0001/",
+        "tags": null,
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "https://www.bleepingcomputer.com/news/google/google-fixes-another-chrome-zero-day-bug-exploited-in-attacks/",
+        "tags": [
+          "Third Party Advisory"
+        ],
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "https://www.debian.org/security/2023/dsa-5496",
+        "tags": [
+          "Third Party Advisory"
+        ],
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "https://www.debian.org/security/2023/dsa-5497",
+        "tags": [
+          "Third Party Advisory"
+        ],
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "https://www.debian.org/security/2023/dsa-5498",
+        "tags": [
+          "Third Party Advisory"
+        ],
+        "source": "chrome-cve-admin@google.com"
+      },
+      {
+        "url": "https://www.mozilla.org/en-US/security/advisories/mfsa2023-40/",
+        "tags": [
+          "Third Party Advisory"
+        ],
+        "source": "chrome-cve-admin@google.com"
+      }
+    ],
+    "vulnStatus": "Modified",
+    "weaknesses": [
+      {
+        "type": "Primary",
+        "source": "nvd@nist.gov",
+        "description": [
+          {
+            "lang": "en",
+            "value": "CWE-787"
+          }
+        ]
+      }
+    ],
+    "descriptions": [
+      {
+        "lang": "en",
+        "value": "Heap buffer overflow in libwebp in Google Chrome prior to 116.0.5845.187 and libwebp 1.3.2 allowed a remote attacker to perform an out of bounds memory write via a crafted HTML page. (Chromium security severity: Critical)"
+      },
+      {
+        "lang": "es",
+        "value": "El desbordamiento del búfer de memoria en libwebp en Google Chrome anterior a 116.0.5845.187 y libwebp 1.3.2 permitía a un atacante remoto realizar una escritura en memoria fuera de los límites a través de una página HTML manipulada. (Severidad de seguridad de Chromium: crítica)"
+      }
+    ],
+    "lastModified": "2023-10-28T19:15:38.643000",
+    "configurations": [
+      {
+        "nodes": [
+          {
+            "negate": false,
+            "cpeMatch": [
+              {
+                "criteria": "cpe:2.3:a:google:chrome:*:*:*:*:*:*:*:*",
+                "vulnerable": true,
+                "matchCriteriaId": "856c1821-5d22-4a4e-859d-8f5305255ab7",
+                "versionEndExcluding": "116.0.5845.187",
+                "versionEndIncluding": "*",
+                "versionStartExcluding": "*",
+                "versionStartIncluding": "*"
+              }
+            ],
+            "operator": "OR"
+          }
+        ],
+        "negate": false,
+        "operator": null
+      },
+      {
+        "nodes": [
+          {
+            "negate": false,
+            "cpeMatch": [
+              {
+                "criteria": "cpe:2.3:o:fedoraproject:fedora:37:*:*:*:*:*:*:*",
+                "vulnerable": true,
+                "matchCriteriaId": "e30d0e6f-4ae8-4284-8716-991dfa48cc5d",
+                "versionEndExcluding": "*",
+                "versionEndIncluding": "*",
+                "versionStartExcluding": "*",
+                "versionStartIncluding": "*"
+              },
+              {
+                "criteria": "cpe:2.3:o:fedoraproject:fedora:38:*:*:*:*:*:*:*",
+                "vulnerable": true,
+                "matchCriteriaId": "cc559b26-5dfc-4b7a-a27c-b77de755dff9",
+                "versionEndExcluding": "*",
+                "versionEndIncluding": "*",
+                "versionStartExcluding": "*",
+                "versionStartIncluding": "*"
+              },
+              {
+                "criteria": "cpe:2.3:o:fedoraproject:fedora:39:*:*:*:*:*:*:*",
+                "vulnerable": true,
+                "matchCriteriaId": "b8edb836-4e6a-4b71-b9b2-aa3e03e0f646",
+                "versionEndExcluding": "*",
+                "versionEndIncluding": "*",
+                "versionStartExcluding": "*",
+                "versionStartIncluding": "*"
+              }
+            ],
+            "operator": "OR"
+          }
+        ],
+        "negate": false,
+        "operator": null
+      },
+      {
+        "nodes": [
+          {
+            "negate": false,
+            "cpeMatch": [
+              {
+                "criteria": "cpe:2.3:o:debian:debian_linux:10.0:*:*:*:*:*:*:*",
+                "vulnerable": true,
+                "matchCriteriaId": "07b237a9-69a3-4a9c-9da0-4e06bd37ae73",
+                "versionEndExcluding": "*",
+                "versionEndIncluding": "*",
+                "versionStartExcluding": "*",
+                "versionStartIncluding": "*"
+              },
+              {
+                "criteria": "cpe:2.3:o:debian:debian_linux:11.0:*:*:*:*:*:*:*",
+                "vulnerable": true,
+                "matchCriteriaId": "fa6feec2-9f11-4643-8827-749718254fed",
+                "versionEndExcluding": "*",
+                "versionEndIncluding": "*",
+                "versionStartExcluding": "*",
+                "versionStartIncluding": "*"
+              },
+              {
+                "criteria": "cpe:2.3:o:debian:debian_linux:12.0:*:*:*:*:*:*:*",
+                "vulnerable": true,
+                "matchCriteriaId": "46d69dcc-ae4d-4ea5-861c-d60951444c6c",
+                "versionEndExcluding": "*",
+                "versionEndIncluding": "*",
+                "versionStartExcluding": "*",
+                "versionStartIncluding": "*"
+              }
+            ],
+            "operator": "OR"
+          }
+        ],
+        "negate": false,
+        "operator": null
+      },
+      {
+        "nodes": [
+          {
+            "negate": false,
+            "cpeMatch": [
+              {
+                "criteria": "cpe:2.3:a:mozilla:firefox:*:*:*:*:*:*:*:*",
+                "vulnerable": true,
+                "matchCriteriaId": "54a821da-91ba-454e-bc32-2152cd7989ae",
+                "versionEndExcluding": "117.0.1",
+                "versionEndIncluding": "*",
+                "versionStartExcluding": "*",
+                "versionStartIncluding": "*"
+              },
+              {
+                "criteria": "cpe:2.3:a:mozilla:firefox_esr:*:*:*:*:*:*:*:*",
+                "vulnerable": true,
+                "matchCriteriaId": "f5cb1076-9147-44a4-b32f-86841deb85da",
+                "versionEndExcluding": "102.15.1",
+                "versionEndIncluding": "*",
+                "versionStartExcluding": "*",
+                "versionStartIncluding": "*"
+              },
+              {
+                "criteria": "cpe:2.3:a:mozilla:firefox_esr:*:*:*:*:*:*:*:*",
+                "vulnerable": true,
+                "matchCriteriaId": "d288632e-e2d5-4319-be74-882d71d699c2",
+                "versionEndExcluding": "115.2.1",
+                "versionEndIncluding": "*",
+                "versionStartExcluding": "*",
+                "versionStartIncluding": "115.0"
+              },
+              {
+                "criteria": "cpe:2.3:a:mozilla:thunderbird:*:*:*:*:*:*:*:*",
+                "vulnerable": true,
+                "matchCriteriaId": "a073724d-52bd-4426-b58d-7a8bd24b8f8e",
+                "versionEndExcluding": "102.15.1",
+                "versionEndIncluding": "*",
+                "versionStartExcluding": "*",
+                "versionStartIncluding": "*"
+              },
+              {
+                "criteria": "cpe:2.3:a:mozilla:thunderbird:*:*:*:*:*:*:*:*",
+                "vulnerable": true,
+                "matchCriteriaId": "952bec0c-2db0-476a-af62-1269f8635b4a",
+                "versionEndExcluding": "115.2.2",
+                "versionEndIncluding": "*",
+                "versionStartExcluding": "*",
+                "versionStartIncluding": "115.0"
+              }
+            ],
+            "operator": "OR"
+          }
+        ],
+        "negate": false,
+        "operator": null
+      },
+      {
+        "nodes": [
+          {
+            "negate": false,
+            "cpeMatch": [
+              {
+                "criteria": "cpe:2.3:a:microsoft:edge:*:*:*:*:*:*:*:*",
+                "vulnerable": true,
+                "matchCriteriaId": "49affe24-5e30-46a4-a3ae-13d8eb15de91",
+                "versionEndExcluding": "117.0.2045.31",
+                "versionEndIncluding": "*",
+                "versionStartExcluding": "*",
+                "versionStartIncluding": "*"
+              }
+            ],
+            "operator": "OR"
+          }
+        ],
+        "negate": false,
+        "operator": null
+      },
+      {
+        "nodes": [
+          {
+            "negate": false,
+            "cpeMatch": [
+              {
+                "criteria": "cpe:2.3:a:webmproject:libwebp:*:*:*:*:*:*:*:*",
+                "vulnerable": true,
+                "matchCriteriaId": "2804dde4-b0a4-4b7f-a318-f491b6316b34",
+                "versionEndExcluding": "1.3.2",
+                "versionEndIncluding": "*",
+                "versionStartExcluding": "*",
+                "versionStartIncluding": "*"
+              }
+            ],
+            "operator": "OR"
+          }
+        ],
+        "negate": false,
+        "operator": null
+      }
+    ],
+    "vendorComments": [],
+    "sourceIdentifier": "chrome-cve-admin@google.com"
+  }

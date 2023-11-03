@@ -47,6 +47,7 @@ typing-extensions = "^4.3"
 datamodel-code-generator = {extras = ["http"], version = ">=0.21.0"}
 types-retry = "^0.9.9.3"
 types-requests = "^2.31.0.1"
+polyfactory = "^2.11.0"
 
 [tool.black]
 line-length = 100
@@ -122,15 +123,20 @@ envlist = py38, py39
     help = "Build python code"
     cmd = "poetry build"
 
+    [tool.poe.tasks.unit_test]
+    help = "Run unit test suite"
+    cmd = "poetry run pytest --cov=bomsquad.vulndb --cov-report html:test-reports/coverage/ --junit-xml=test-reports/pytest-report.xml tests/unit"
+
+    [tool.poe.tasks.data_validation_test]
+    help = "Run integration test suite"
+    cmd = "poetry run pytest tests/data_validation"
+
     [tool.poe.tasks.test]
     help = "Run all tests"
-    cmd = "poetry run pytest --cov=bomsquad.vulndb --cov-report html:test-reports/coverage/ --junit-xml=test-reports/pytest-report.xml"
-
-    [tool.poe.tasks.clean]
-    help = "Clean all build artifacts"
-    cmd = """
-      rm -rf dist && rm -rf test-reports
-    """
+    sequence = [
+        "unit_test",
+        "data_validation_test"
+    ]
 
   [tool.poe.tasks.lint]
   help = "Lint this package"
