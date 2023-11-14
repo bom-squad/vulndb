@@ -1,5 +1,7 @@
 CREATE DATABASE vulndb;
 
+\c vulndb;
+
 CREATE TABLE cve(
     id serial NOT NULL PRIMARY KEY,
     data jsonb NOT NULL
@@ -22,3 +24,7 @@ CREATE TABLE osv(
 
 CREATE INDEX osv_id ON osv USING gin((data->'id'));
 CREATE INDEX osv_alias_id ON osv USING gin((data->'aliases'));
+
+GRANT CONNECT ON DATABASE vulndb TO default_user;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO default_user;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO default_user;

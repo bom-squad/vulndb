@@ -1,0 +1,4 @@
+FROM vulndb:nvd
+RUN /etc/init.d/postgresql start && vulndb osv ingest
+EXPOSE 5000
+ENTRYPOINT [ "/app/vulndb.sh" ]
