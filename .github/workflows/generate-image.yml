@@ -28,7 +28,7 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.GH_TOKEN }}
       # This step uses [docker/metadata-action](https://github.com/docker/metadata-action#about) to extract tags and labels that will be applied to the specified image. The `id` "meta" allows the output of this step to be referenced in a subsequent step. The `images` value provides the base name for the tags and labels.
       - name: Extract metadata (tags, labels) for Docker
         id: meta
@@ -47,20 +47,20 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           file: Dockerfile-basic
 
-      - name: Build&Push Image with updated nvd data
-        uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
-        with:
-          context: .
-          push: true
-          tags: vulndb:nvd
-          labels: ${{ steps.meta.outputs.labels }}
-          file: Dockerfile-update-nvd
+      # - name: Build&Push Image with updated nvd data
+      #   uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+      #   with:
+      #     context: .
+      #     push: true
+      #     tags: vulndb:nvd
+      #     labels: ${{ steps.meta.outputs.labels }}
+      #     file: Dockerfile-update-nvd
 
-      - name: Build&Push Image with updated nvd + osv
-        uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
-        with:
-          context: .
-          push: true
-          tags: vulndb:nvd-osv, vunldb:latest
-          labels: ${{ steps.meta.outputs.labels }}
-          file: Dockerfile-basic
+      # - name: Build&Push Image with updated nvd + osv
+      #   uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+      #   with:
+      #     context: .
+      #     push: true
+      #     tags: vulndb:nvd-osv, vunldb:latest
+      #     labels: ${{ steps.meta.outputs.labels }}
+      #     file: Dockerfile-basic
