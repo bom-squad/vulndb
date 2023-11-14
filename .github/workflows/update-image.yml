@@ -18,24 +18,15 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v5
         with:
           images: ${{secrets.DOCKERHUB_USERNAME}}/vulndb
 
-      - name: Build&Push Basic Image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: ${{secrets.DOCKERHUB_USERNAME}}/vulndb:basic
-          labels: ${{ steps.meta.outputs.labels }}
-          file: Dockerfile-basic
-
-
       - name: Update FROM in update Docker file
-        run: sed -i 's|FROM vulndb:latest|FROM ${{DOCKERHUB_USERNAME}}/vulndb:basic|' Dockerfile-update
+        run: sed -i 's|FROM vulndb:latest|FROM ${{DOCKERHUB_USERNAME}}/vulndb:latest|' Dockerfile-update
 
 
       - name: Build&Push Image with updated data

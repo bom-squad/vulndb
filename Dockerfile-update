@@ -1,0 +1,5 @@
+FROM vulndb:latest
+RUN /etc/init.d/postgresql start && vulndb nvd ingest --scope cve --update
+RUN /etc/init.d/postgresql start && vulndb osv ingest --update
+EXPOSE 5000
+ENTRYPOINT [ "/app/vulndb.sh" ]
