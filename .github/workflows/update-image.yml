@@ -26,7 +26,7 @@ jobs:
           images: ${{secrets.DOCKERHUB_USERNAME}}/vulndb
 
       - name: Update FROM in update Docker file
-        run: sed -i 's|FROM vulndb:latest|FROM ${{DOCKERHUB_USERNAME}}/vulndb:latest|' Dockerfile-update
+        run: sed -i 's|FROM vulndb:latest|FROM ${{secrets.DOCKERHUB_USERNAME}}/vulndb:latest|' Dockerfile-update
 
 
       - name: Build&Push Image with updated data
