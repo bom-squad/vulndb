@@ -25,14 +25,10 @@ class OSV:
         "Maven",
         "NuGet",
         "Linux",
-        "Debian",
-        "Alpine",
         "Hex",
         "Android",
         "GitHub Actions",
         "Pub",
-        "Rocky Linux",
-        "AlmaLinux",
     )
 
     bucket: str = "osv-vulnerabilities"
