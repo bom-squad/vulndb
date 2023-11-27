@@ -12,7 +12,7 @@ class ConfigResolver:
     def resolve_config(cls) -> Path:
         """
         Resolve the active configuration from one of the packaged defaults, or a local configuraion
-        loaded from $HOME/.watts/config.toml.
+        loaded from $HOME/.vulndb/config.toml.
         """
         home_config = Path(f"{os.getenv('HOME')}/.vulndb/config.toml")
         if home_config.exists():

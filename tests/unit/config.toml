@@ -1,5 +1,4 @@
 [vulndb]
-database = 'test_vulndb'
-username = 'test_username'
-password = 'test_password'
+db.connector = 'sqlite3'
+db.path = 'tests/db/vulndb.db'
 request_delay = 5

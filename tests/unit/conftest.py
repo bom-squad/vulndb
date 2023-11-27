@@ -14,33 +14,30 @@ from bomsquad.vulndb.model.openssf import OpenSSF
 unit_root = Path(__file__).parent
 
 # Patch config file resolution to point at the unit test configuration. Note that
-# any importing any singletons that trigger loading database connections needs to
+# importing any singletons that trigger loading database connections needs to
 # be defered until after this patch, hence several fixtures below defer their
 # imports.
 with patch(
     "bomsquad.vulndb.config_resolver.ConfigResolver.resolve_config",
     return_value=unit_root / "config.toml",
 ):
-    from bomsquad.vulndb.config import instance as config
+    from bomsquad.vulndb.config import instance as config  # noqa: F401
 
 logger = logging.getLogger(__name__)
 
 
 @pytest.fixture(scope="session", autouse=True)
 def test_database() -> Generator[None, None, None]:
-    from bomsquad.vulndb.db.connection import pool
+    from bomsquad.vulndb.db.connection import instance as factory
     from bomsquad.vulndb.db.manager import instance as dbm
 
-    logger.info(f"Creating test database instance {config.database}")
+    dbm.drop()
     dbm.create()
     dbm.create_tables()
-    dbm.create_user()
     try:
         yield
     finally:
-        logger.info("Shutting down active connection pool")
-        pool.close()
-        logger.info("Dropping test database instance")
+        factory.close()
         dbm.drop()
 
 

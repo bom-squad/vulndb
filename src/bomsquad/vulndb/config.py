@@ -1,4 +1,5 @@
 import logging
+from pathlib import Path
 from typing import Optional
 
 import tomli
@@ -9,12 +10,12 @@ from bomsquad.vulndb.config_resolver import ConfigResolver
 logger = logging.getLogger(__name__)
 
 
+class DBConfig(BaseModel):
+    path: Path
+
+
 class Config(BaseModel):
-    min_conn: int = 1
-    max_conn: int = 10
-    database: str
-    username: str
-    password: str
+    db: DBConfig
     nvd_api_key: Optional[str] = None
     request_delay: int
 

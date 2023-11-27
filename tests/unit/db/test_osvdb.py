@@ -2,8 +2,10 @@ import logging
 from contextlib import AbstractContextManager
 from contextlib import nullcontext as does_not_raise
 from pathlib import Path
+from typing import List
 
 import pytest
+from packageurl import PackageURL
 from tests.factory import CreditFactory
 from tests.factory import OpenSSFFactory
 
@@ -30,6 +32,15 @@ class TestOSVDB:
             for osv in osvdb.find_by_id_or_alias(id):
                 assert isinstance(osv, OpenSSF)
                 assert osv.id == id or id in osv.aliases
+
+    @pytest.mark.parametrize(
+        ("purl", "expected_ids"), [("pkg:cargo/libwebp-sys2", ["GHSA-j7hp-h8jx-5ppr"])]
+    )
+    def test_find_by_purl(self, purl: str, expected_ids: List[str]) -> None:
+        found_records = list(osvdb.find_by_purl(PackageURL.from_string(purl)))
+        assert len(found_records) == len(expected_ids)
+        for record in found_records:
+            assert record.id in expected_ids
 
     def test_upsert_new(self) -> None:
         ecosystem = list(osvdb.ecosystems())[0]
@@ -87,11 +98,11 @@ class TestOSVDB:
     def test_last_modified(self) -> None:
         last_modified = osvdb.last_modified()
         assert last_modified
-        assert last_modified.isoformat() == "2023-10-27T01:25:38.402707-04:00"
+        assert last_modified.isoformat() == "2023-10-27T01:25:38.402710"
 
     def test_last_modified_in_ecosystem(self, osv_examples: Path) -> None:
         expected = {
-            "crates.io": "2023-10-27T01:25:38.402707-04:00",
+            "crates.io": "2023-10-27T01:25:38.402710",
             "conan": None,
         }
         for ecosystem in expected.keys():

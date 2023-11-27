@@ -1,16 +1,16 @@
 import logging
 from typing import List
 
-from bomsquad.vulndb.db.connection import pool
+from bomsquad.vulndb.db.connection import instance as factory
 from bomsquad.vulndb.db.error import InvalidDataError
-from bomsquad.vulndb.db.nvddb import NVDDB
+from bomsquad.vulndb.db.nvddb import instance as nvddb
 
 logger = logging.getLogger(__name__)
 
 
 class TestNVDModel:
-    def test_all_cve_records_validate(self, nvddb: NVDDB) -> None:
-        with pool.get() as conn:
+    def test_all_cve_records_validate(self) -> None:
+        with factory.get() as conn:
             cursor = conn.cursor()
 
             total_records = 0
@@ -28,8 +28,8 @@ class TestNVDModel:
             assert len(errors) == 0, f"cve has {len(errors)} / {total_records} errors"
             logger.info(f"No errors in {total_records} cve records")
 
-    def test_all_cpe_records_validate(self, nvddb: NVDDB) -> None:
-        with pool.get() as conn:
+    def test_all_cpe_records_validate(self) -> None:
+        with factory.get() as conn:
             cursor = conn.cursor()
 
             total_records = 0
