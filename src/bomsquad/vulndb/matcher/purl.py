@@ -47,10 +47,11 @@ class PURLMatcher:
             except InvalidVersion as iv:
                 logger.error(f"Failed match due to {iv}")
                 return False
+        logger.info(f"[m] {to_match} matches {range}")
         return True
 
     @classmethod
-    def matching_criteria(cls, purl: PackageURL, osv: OpenSSF) -> List[_MatchResult]:
+    def _matching_criteria(cls, purl: PackageURL, osv: OpenSSF) -> List[_MatchResult]:
         results: List[_MatchResult] = []
 
         basic_purl = cls.simplify(purl)
@@ -74,5 +75,5 @@ class PURLMatcher:
 
     @classmethod
     def is_affected(cls, purl: PackageURL, osv: OpenSSF) -> bool:
-        matching = cls.matching_criteria(purl, osv)
+        matching = cls._matching_criteria(purl, osv)
         return bool(matching)

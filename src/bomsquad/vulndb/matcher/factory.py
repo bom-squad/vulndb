@@ -3,6 +3,7 @@ import logging
 from packageurl import PackageURL
 from univers.version_range import NugetVersionRange
 from univers.version_range import VersionRange
+from univers.versions import GenericVersion
 from univers.versions import GolangVersion
 from univers.versions import MavenVersion
 from univers.versions import NugetVersion
@@ -26,6 +27,8 @@ class VersionFactory:
             return GolangVersion(spec)
         elif ecosystem == "nuget":
             return NugetVersion(spec)
+        elif ecosystem == "npm":
+            return GenericVersion(spec)
         elif ecosystem == "cargo":
             return SemverVersion(spec)
         raise ValueError("Unknown ecosystem")
@@ -44,7 +47,9 @@ class VersionRangeFactory:
         cls, purl: PackageURL, affected_range: Range
     ) -> VersionRange:
         low: str
-        high: str = "*"
+        low_operator: str = ""
+        combiner: str = ""
+        high: str = ""
         high_operator: str = ""
         for event in affected_range.events:
             if event.introduced:
@@ -59,6 +64,11 @@ class VersionRangeFactory:
                 high = event.last_affected
                 high_operator = "<="
 
+        if high == "":
+            low_operator = ">="
+        else:
+            combiner = "|"
+
         # .NET has a strange syntax. Maybe there's a cleaner way to do this with univers, but on
         # demo deadline, this will work.
         if purl.type == "nuget":
@@ -67,6 +77,6 @@ class VersionRangeFactory:
                 f"[{low},{high}{']' if high_operator == '>=' else ')'}"
             )
 
-        low_str = f"{low}," if low != "0" else ""
-        spec = f"vers:{purl.type}/{low_str}{high_operator}{high}"
+        low_str = f"{low}" if low != "0" else ""
+        spec = f"vers:{purl.type}/{low_operator}{low_str}{combiner}{high_operator}{high}"
         return VersionRange.from_string(spec)
