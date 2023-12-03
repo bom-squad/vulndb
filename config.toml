@@ -1,8 +1,11 @@
 [vulndb]
-database = 'vulndb'
+database='vulndb'
 min_conn = 1
 max_conn = 10
+username='default_user'
+password='default_password'
 # username = 'your-username'
 # password = 'your-password'
 # nvd_api_key = 'your-api-key'
 request_delay = 5
+gcloud_project = 'devstartup'
