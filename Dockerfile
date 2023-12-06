@@ -1,7 +1,7 @@
 FROM python:3.10
 ARG PACKAGE
 COPY db/create.sql /docker-entrypoint-initdb.d/.
-RUN apt-get update && apt-get install -y postgresql postgresql-contrib
+RUN apt-get clean && apt-get update && apt-get install -y postgresql postgresql-contrib
 RUN apt-get install -y gcc
 ENV DB_USER=default_user
 ENV DB_PASSWORD=default_password
@@ -20,7 +20,7 @@ COPY pg_hba.conf /etc/postgresql/15/main/pg_hba.conf
 RUN pip install -e .
 USER postgres
 RUN /etc/init.d/postgresql start && psql < /app/db/create.sql
-RUN /etc/init.d/postgresql start && vulndb nvd ingest
+RUN /etc/init.d/postgresql start && vulndb nvd ingest --scope cve
 RUN /etc/init.d/postgresql start && vulndb osv ingest
 EXPOSE 5000
 ENTRYPOINT [ "/app/vulndb.sh" ]
