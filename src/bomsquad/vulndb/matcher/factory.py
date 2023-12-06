@@ -22,7 +22,7 @@ class VersionFactory:
             return PypiVersion(spec)
         elif ecosystem == "maven":
             return MavenVersion(spec)
-        elif ecosystem == "go":
+        elif ecosystem == "go" or ecosystem == "golang":
             return GolangVersion(spec)
         elif ecosystem == "nuget":
             return NugetVersion(spec)

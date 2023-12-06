@@ -25,7 +25,7 @@ class _Query:
         results: List[PURLVulnerability] = []
 
         basic_purl = PURLMatcher.simplify(purl)
-        for osv in osvdb.find_by_purl(basic_purl):
+        for osv, data in osvdb.find_by_purl(basic_purl):
             if PURLMatcher.is_affected(purl, osv) is False:
                 continue
 
@@ -42,5 +42,17 @@ class _Query:
 
         return results
 
+    def by_purl_json(self, target: str) -> List[PURLVulnerability]:
+        purl = PackageURL.from_string(target)
+        results: List[PURLVulnerability] = []
+
+        basic_purl = PURLMatcher.simplify(purl)
+        for osv, data in osvdb.find_by_purl(basic_purl):
+            if PURLMatcher.is_affected(purl, osv) is False:
+                continue
+
+            results.append(data)
+
+        return results
 
 query = _Query()
