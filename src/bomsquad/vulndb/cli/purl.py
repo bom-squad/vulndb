@@ -103,14 +103,13 @@ def get_vulns(purls, min_severity=None):
     cve_ids = set()
     dict_cve_ids_to_bom_ref = {}
     for purl in purls:
-        if is_supported_ecosystem(purl):
-            vulns = vulnerabilities.by_purl_json(purl)
-            if vulns:
-                for vuln in vulns:
-                    for alias in vuln['aliases']:
-                        if 'CVE' in alias:
-                            cve_ids.add(alias)
-                            dict_cve_ids_to_bom_ref[alias] = purl
+        vulns = vulnerabilities.by_purl_json(purl)
+        if vulns:
+            for vuln in vulns:
+                for alias in vuln['aliases']:
+                    if 'CVE' in alias:
+                        cve_ids.add(alias)
+                        dict_cve_ids_to_bom_ref[alias] = purl
 
     vulns = []
     if cve_ids:

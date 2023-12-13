@@ -24,6 +24,7 @@ datamodel-code-generator = ">=0.21.0"
 rich = "^13.4.2"
 univers = "^30.10.0"
 cpe = "^1.2.1"
+fastapi = "^0.104.1"
 
 
 [build-system]

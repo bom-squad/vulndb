@@ -8,7 +8,7 @@ from bomsquad.vulndb.cli.cve import cve_app
 from bomsquad.vulndb.cli.ingest import nvd_app
 from bomsquad.vulndb.cli.ingest import osv_app
 from bomsquad.vulndb.cli.purl import purl_app
-
+from bomsquad.vulndb.cli.server import server_app
 
 app = typer.Typer()
 
@@ -17,6 +17,7 @@ app.add_typer(osv_app)
 app.add_typer(nvd_app)
 app.add_typer(purl_app)
 app.add_typer(cve_app)
+app.add_typer(server_app)
 
 
 @app.callback()
