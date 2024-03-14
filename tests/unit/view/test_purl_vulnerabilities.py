@@ -24,11 +24,11 @@ class TestPURLVulnerabilities:
                         aliases=["CVE-2023-4863"],
                         affected_versions=[],
                         affected_version_ranges=[
-                            ">= 22.0.0 and <= 22.3.24",
-                            ">= 24.0.0 and <= 24.8.3",
-                            ">= 25.0.0 and <= 25.8.1",
-                            ">= 26.0.0 and <= 26.2.1",
-                            ">= 27.0.0-beta.1 and <= 27.0.0-beta.2",
+                            ">= 22.0.0 and < 22.3.24",
+                            ">= 24.0.0 and < 24.8.3",
+                            ">= 25.0.0 and < 25.8.1",
+                            ">= 26.0.0 and < 26.2.1",
+                            ">= 27.0.0-beta.1 and < 27.0.0-beta.2",
                         ],
                     )
                 ],

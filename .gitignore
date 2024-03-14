@@ -52,3 +52,4 @@ Thumbs.db
 test-reports
 .coverage
 .DS_Store
+tests/db

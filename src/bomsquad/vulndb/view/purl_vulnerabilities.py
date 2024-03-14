@@ -1,6 +1,7 @@
+from __future__ import annotations
+
 import logging
 from dataclasses import dataclass
-from typing import List
 
 from packageurl import PackageURL
 
@@ -14,15 +15,15 @@ logger = logging.getLogger(__name__)
 @dataclass
 class PURLVulnerability:
     id: str
-    aliases: List[str]
-    affected_versions: List[str]
-    affected_version_ranges: List[str]
+    aliases: list[str]
+    affected_versions: list[str]
+    affected_version_ranges: list[str]
 
 
 class _Query:
-    def by_purl(self, target: str) -> List[PURLVulnerability]:
+    def by_purl(self, target: str) -> list[PURLVulnerability]:
         purl = PackageURL.from_string(target)
-        results: List[PURLVulnerability] = []
+        results: list[PURLVulnerability] = []
 
         basic_purl = PURLMatcher.simplify(purl)
         for osv in osvdb.find_by_purl(basic_purl):

@@ -47,7 +47,6 @@ class PURLMatcher:
             except InvalidVersion as iv:
                 logger.error(f"Failed match due to {iv}")
                 return False
-        logger.info(f"[m] {to_match} matches {range}")
         return True
 
     @classmethod

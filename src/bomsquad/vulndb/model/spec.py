@@ -8,7 +8,7 @@ class Spec:
         if event.introduced:
             return f">= {event.introduced}"
         if event.fixed:
-            return f"<= {event.fixed}"
+            return f"< {event.fixed}"
         if event.last_affected:
             return f">{event.last_affected}"
         if event.limit:

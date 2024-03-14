@@ -71,17 +71,18 @@ class DatabaseManager:
             """,
             """
             CREATE TABLE aliases(
-                id VARCHAR(64) PRIMARY KEY NOT NULL,
+                id VARCHAR(64) NOT NULL,
                 alias VARCHAR(64) NOT NULL,
-                FOREIGN KEY(id) REFERENCES osv(id)
+                FOREIGN KEY(id) REFERENCES osv(id),
                 UNIQUE(id, alias)
             )
             """,
             """
             CREATE TABLE purl_osv(
-                purl VARCHAR(256) PRIMARY KEY NOT NULL,
+                purl VARCHAR(256) NOT NULL,
                 osv_id VARCHAR(64) NOT NULL,
-                FOREIGN KEY(osv_id) REFERENCES osv(id)
+                FOREIGN KEY(osv_id) REFERENCES osv(id),
+                UNIQUE(purl, osv_id)
             )
             """,
         ]

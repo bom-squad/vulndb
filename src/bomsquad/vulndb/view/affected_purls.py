@@ -34,6 +34,7 @@ class _Query:
     def by_id(self, id: str) -> List[AffectedPURL]:
         by_purl: Dict[str, AffectedPURL] = {}
         for osv in osvdb.find_by_id_or_alias(id):
+            logger.info(f"osv {osv.id}")
             for affected in osv.affected:
                 if affected.package and affected.package.purl:
                     entry: AffectedPURL
