@@ -18,9 +18,9 @@ may evolve to incorporate additional datasets, or serve further use cases as we 
 
 ## Installation
 
-1. Run the create.sql as the owning user:
+1. Create the database instance:
 ```
-$ sql -U <username> -d <database> -a -f db/create.sql
+$ vulndb admin create
 ```
 3. Copy config.toml to ~/.vulndb/config.toml and edit to match your evironment
 
@@ -30,10 +30,10 @@ The vulndb cli exposes the following commands:
 
 ### admin
 
-#### create_all
+#### create
 
 ```
-$ vulndb admin create_all --help
+$ vulndb admin create --help
 
  Usage: vulndb admin create_all [OPTIONS]
 
@@ -44,52 +44,7 @@ $ vulndb admin create_all --help
 ╰──────────────────────────────────────────────╯
 ```
 
-#### create_db
-
-```
-$ vulndb admin create_db --help
-
- Usage: vulndb admin create_db [OPTIONS]
-
- Create database for active configuration.
-
-╭─ Options ───────────────────────────────────────────────────────────────────╮
-│ --show-only    Show script, but do not execute      [default: no-show-only] │
-│ --help         Show this message and exit.                                  │
-╰─────────────────────────────────────────────────────────────────────────────╯
-```
-
-#### create_tables
-
-```
-$ vulndb admin create_tables --help
-
- Usage: vulndb admin create_tables [OPTIONS]
-
- Create tables and indiciates for active configuration.
-
-╭─ Options ───────────────────────────────────────────────────────────────────╮
-│ --show-only    Show script, but do not execute      [default: no-show-only] │
-│ --help         Show this message and exit.                                  │
-╰─────────────────────────────────────────────────────────────────────────────╯
-```
-
-#### create_user
-
-```
-$ vulndb admin create_user --help
-
- Usage: vulndb admin create_user [OPTIONS]
-
- Create user for active configuration.
-
-╭─ Options ───────────────────────────────────────────────────────────────────╮
-│ --show-only    Show script, but do not execute      [default: no-show-only] │
-│ --help         Show this message and exit.                                  │
-╰─────────────────────────────────────────────────────────────────────────────╯
-```
-
-#### drop_all
+#### drop
 
 ```
 $ vulndb admin drop_all --help
