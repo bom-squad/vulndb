@@ -4,7 +4,6 @@
 # TODO: https://github.com/PyCQA/flake8/issues/234
 doctests = True
 ignore = C901, E501
-max_line_length = 100
 max_complexity = 10
 
 # https://github.com/terrencepreilly/darglint#flake8

@@ -4,6 +4,10 @@ from typing import Dict
 from pydantic import ValidationError
 
 
+class InvalidConfigurationError(Exception):
+    pass
+
+
 class RecordNotFoundError(Exception):
     pass
 

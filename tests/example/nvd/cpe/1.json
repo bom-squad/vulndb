@@ -1,0 +1,25 @@
+{
+    "refs": [
+      {
+        "ref": "https://gitlab.gnome.org/GNOME/gdk-pixbuf/-/tags",
+        "type": "Change Log"
+      },
+      {
+        "ref": "https://docs.gtk.org/gdk-pixbuf/",
+        "type": "Change Log"
+      }
+    ],
+    "titles": [
+      {
+        "lang": "en",
+        "title": "GNOME GdkPixbu 0.17"
+      }
+    ],
+    "cpeName": "cpe:2.3:a:gnome:gdkpixbuf:0.17:*:*:*:*:*:*:*",
+    "created": "2023-10-31T13:06:28.173000",
+    "cpeNameId": "3a842bca-b900-47c6-a5e0-e797616b0ed9",
+    "deprecated": false,
+    "deprecates": [],
+    "deprecatedBy": [],
+    "lastModified": "2023-10-31T13:06:28.173000"
+  }

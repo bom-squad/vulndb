@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "bomsquad-vulndb"
-version = "0.1.0"
+version = "0.5.0"
 description = "Compilation of the National Vulnerability Database, and all public OSV data sources"
 authors = ["Timothy M. Wyatt <tmw@appcensus.io>"]
 license = "Apache-2.0"
@@ -15,9 +15,7 @@ vulndb = "bomsquad.vulndb.cli.vulndb:app"
 [tool.poetry.dependencies]
 python = "^3.10"
 pydantic = "^2.1"
-psycopg2 = "^2.9.6"
 retry = "^0.9.2"
-google-cloud-storage = "^2.10.0"
 tomli = "^2.0.1"
 typer = "^0.9.0"
 packageurl-python = "^0.11.2"
@@ -25,6 +23,7 @@ datamodel-code-generator = ">=0.21.0"
 rich = "^13.4.2"
 univers = "^30.10.0"
 cpe = "^1.2.1"
+jsonpath-ng = "^1.6.0"
 
 
 [build-system]
@@ -47,6 +46,7 @@ typing-extensions = "^4.3"
 datamodel-code-generator = {extras = ["http"], version = ">=0.21.0"}
 types-retry = "^0.9.9.3"
 types-requests = "^2.31.0.1"
+polyfactory = "^2.11.0"
 
 [tool.black]
 line-length = 100
@@ -122,15 +122,20 @@ envlist = py38, py39
     help = "Build python code"
     cmd = "poetry build"
 
+    [tool.poe.tasks.unit_test]
+    help = "Run unit test suite"
+    cmd = "poetry run pytest --cov=bomsquad.vulndb --cov-report html:test-reports/coverage/ --junit-xml=test-reports/pytest-report.xml tests/unit"
+
+    [tool.poe.tasks.data_validation_test]
+    help = "Run integration test suite"
+    cmd = "poetry run pytest tests/data_validation"
+
     [tool.poe.tasks.test]
     help = "Run all tests"
-    cmd = "poetry run pytest --cov=bomsquad.vulndb --cov-report html:test-reports/coverage/ --junit-xml=test-reports/pytest-report.xml"
-
-    [tool.poe.tasks.clean]
-    help = "Clean all build artifacts"
-    cmd = """
-      rm -rf dist && rm -rf test-reports
-    """
+    sequence = [
+        "unit_test",
+        "data_validation_test"
+    ]
 
   [tool.poe.tasks.lint]
   help = "Lint this package"

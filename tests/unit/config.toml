@@ -1,0 +1,4 @@
+[vulndb]
+db.connector = 'sqlite3'
+db.path = 'tests/db/vulndb.db'
+request_delay = 5

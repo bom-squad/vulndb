@@ -8,7 +8,7 @@ from typing import Optional
 import requests
 from retry import retry
 
-from bomsquad.vulndb.config import config
+from bomsquad.vulndb.config import instance as config
 from bomsquad.vulndb.model.cpe import CPE
 from bomsquad.vulndb.model.cve import CVE
 
