@@ -158,5 +158,14 @@ class OSVDB:
                 if not found_one:
                     raise RecordNotFoundError(f"No records found for id/alias {id}")
 
+    def find_by_id(self, id: str) -> OpenSSF:
+        with factory.get() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT osv.id, osv.data FROM osv WHERE osv.id=?", [id])
+            for id, data in cursor.fetchall():
+                return self._materialize_openssf(data)
+            else:
+                raise RecordNotFoundError(f"No records found for id/alias {id}")
+
 
 instance = OSVDB()
