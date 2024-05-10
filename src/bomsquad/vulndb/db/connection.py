@@ -20,17 +20,17 @@ class ConnectionFactory:
     _writable: Any = None
 
     @classmethod
-    def _adapt_timestamp(cls, value: datetime) -> int:
+    def _adapt_timestamp(cls, value: datetime) -> float:
         dt = value
 
         if value.tzinfo is None:
             dt = value.replace(tzinfo=timezone.utc)
 
-        return int(dt.timestamp() * 1000000)
+        return dt.timestamp()
 
     @classmethod
     def _convert_timestamp(cls, value: bytes) -> datetime:
-        return datetime.fromtimestamp(int(value) / 1000000, timezone.utc)
+        return datetime.fromtimestamp(float(value), timezone.utc)
 
     @classmethod
     def _adapt_json_data(cls, value: Dict[str, Any]) -> str:

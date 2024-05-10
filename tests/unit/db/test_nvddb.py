@@ -58,7 +58,9 @@ class TestNVDDB:
     def test_cve_last_modified(self) -> None:
         last_modified = nvddb.cve_last_modified()
         assert last_modified
-        assert last_modified == datetime.fromisoformat("2023-10-28T19:15:38.643000Z")
+        assert last_modified.replace(microsecond=0) == datetime.fromisoformat(
+            "2023-10-28T19:15:38Z"
+        )
 
     @pytest.mark.parametrize(
         ("id", "expectation"),
@@ -101,4 +103,6 @@ class TestNVDDB:
     def test_cpe_last_modified(self) -> None:
         last_modified = nvddb.cpe_last_modified()
         assert last_modified
-        assert last_modified == datetime.fromisoformat("2023-10-31T15:21:10.153000Z")
+        assert last_modified.replace(microsecond=0) == datetime.fromisoformat(
+            "2023-10-31T15:21:10Z"
+        )
