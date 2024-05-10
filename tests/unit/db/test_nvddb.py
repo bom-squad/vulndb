@@ -1,6 +1,7 @@
 import logging
 from contextlib import AbstractContextManager
 from contextlib import nullcontext as does_not_raise
+from datetime import datetime
 from pathlib import Path
 from uuid import UUID
 
@@ -57,7 +58,7 @@ class TestNVDDB:
     def test_cve_last_modified(self) -> None:
         last_modified = nvddb.cve_last_modified()
         assert last_modified
-        assert last_modified.isoformat() == "2023-10-28T19:15:38.643000"
+        assert last_modified == datetime.fromisoformat("2023-10-28T19:15:38.643000Z")
 
     @pytest.mark.parametrize(
         ("id", "expectation"),
@@ -100,4 +101,4 @@ class TestNVDDB:
     def test_cpe_last_modified(self) -> None:
         last_modified = nvddb.cpe_last_modified()
         assert last_modified
-        assert last_modified.isoformat() == "2023-10-31T15:21:10.153000"
+        assert last_modified == datetime.fromisoformat("2023-10-31T15:21:10.153000Z")

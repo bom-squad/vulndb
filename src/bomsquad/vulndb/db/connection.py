@@ -3,6 +3,7 @@ import logging
 import sqlite3
 from contextlib import contextmanager
 from datetime import datetime
+from datetime import timezone
 from threading import local
 from typing import Any
 from typing import cast
@@ -19,12 +20,17 @@ class ConnectionFactory:
     _writable: Any = None
 
     @classmethod
-    def _adapt_timestamp(cls, value: datetime) -> float:
-        return value.timestamp()
+    def _adapt_timestamp(cls, value: datetime) -> int:
+        dt = value
+
+        if value.tzinfo is None:
+            dt = value.replace(tzinfo=timezone.utc)
+
+        return int(dt.timestamp() * 1000000)
 
     @classmethod
     def _convert_timestamp(cls, value: bytes) -> datetime:
-        return datetime.fromtimestamp(float(value))
+        return datetime.fromtimestamp(int(value) / 1000000, timezone.utc)
 
     @classmethod
     def _adapt_json_data(cls, value: Dict[str, Any]) -> str:
