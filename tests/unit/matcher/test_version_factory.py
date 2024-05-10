@@ -13,7 +13,7 @@ class TestVersionFactory:
             ("npm", "1.0", does_not_raise()),
             ("pypi", "42.0.3", does_not_raise()),
             ("maven", "1.0", does_not_raise()),
-            ("go", "1.0", does_not_raise()),
+            ("golang", "1.0", does_not_raise()),
             ("nuget", "1.0", does_not_raise()),
             ("npm", "1.0", does_not_raise()),
             ("cargo", "1.0", does_not_raise()),

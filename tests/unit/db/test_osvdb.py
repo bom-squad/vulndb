@@ -1,6 +1,7 @@
 import logging
 from contextlib import AbstractContextManager
 from contextlib import nullcontext as does_not_raise
+from datetime import datetime
 from pathlib import Path
 from typing import List
 
@@ -111,16 +112,18 @@ class TestOSVDB:
     def test_last_modified(self) -> None:
         last_modified = osvdb.last_modified()
         assert last_modified
-        assert last_modified.isoformat() == "2023-10-27T01:25:38.402710"
+        assert last_modified.replace(microsecond=0) == datetime.fromisoformat(
+            "2023-10-27T05:25:38Z"
+        )
 
     def test_last_modified_in_ecosystem(self, osv_examples: Path) -> None:
         expected = {
-            "crates.io": "2023-10-27T01:25:38.402710",
+            "crates.io": datetime.fromisoformat("2023-10-27T05:25:38Z"),
             "conan": None,
         }
         for ecosystem in expected.keys():
             last_modified = osvdb.last_modified_in_ecosystem(ecosystem)
             if last_modified:
-                assert last_modified.isoformat() == expected[ecosystem]
+                assert last_modified.replace(microsecond=0) == expected[ecosystem]
             else:
                 assert expected[ecosystem] is None
