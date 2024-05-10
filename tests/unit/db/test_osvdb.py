@@ -35,6 +35,19 @@ class TestOSVDB:
                 assert osv.id == id or id in osv.aliases
 
     @pytest.mark.parametrize(
+        ("id", "expectation"),
+        [
+            ("GHSA-9xjr-m6f3-v5wm", does_not_raise()),
+            ("CVE-1968-4242", pytest.raises(RecordNotFoundError)),
+        ],
+    )
+    def test_find_by_id(self, id: str, expectation: AbstractContextManager[Exception]) -> None:
+        with expectation:
+            osv = osvdb.find_by_id(id)
+            assert isinstance(osv, OpenSSF)
+            assert osv.id == id
+
+    @pytest.mark.parametrize(
         ("purl", "expected_ids"), [("pkg:cargo/libwebp-sys2", ["GHSA-j7hp-h8jx-5ppr"])]
     )
     def test_find_by_purl(self, purl: str, expected_ids: List[str]) -> None:
