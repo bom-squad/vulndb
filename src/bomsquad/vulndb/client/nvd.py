@@ -34,7 +34,7 @@ class NVD:
             url = f"{self.CVE_STEM}?startIndex={offset}"
             if last_mod_start_date:
                 dtstart = last_mod_start_date.isoformat()
-                dtend = datetime.utcnow().replace(tzinfo=timezone.utc).isoformat()
+                dtend = datetime.now(timezone.utc).isoformat()
                 url += f"&lastModStartDate={urlquote(dtstart)}&lastModEndDate={urlquote(dtend)}"
                 logger.info(f"Querying from {offset} - {limit} and {dtstart} - {dtend}")
             headers = {"Accept": "application/json"}
@@ -74,7 +74,7 @@ class NVD:
             url = f"{self.CPE_STEM}?startIndex={offset}"
             if last_mod_start_date:
                 dtstart = last_mod_start_date.isoformat()
-                dtend = datetime.utcnow().replace(tzinfo=timezone.utc).isoformat()
+                dtend = datetime.now(timezone.utc).isoformat()
                 url += f"&lastModStartDate={urlquote(dtstart)}&lastModEndDate={urlquote(dtend)}"
                 logger.info(f"Querying from {offset} - {limit} and {dtstart} - {dtend}")
             headers = {"Accept": "application/json"}
