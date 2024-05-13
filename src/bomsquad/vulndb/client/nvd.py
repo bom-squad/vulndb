@@ -2,7 +2,6 @@ import json
 import logging
 import time
 from datetime import datetime
-from datetime import timedelta
 from datetime import timezone
 from typing import Generator
 from typing import Optional
@@ -34,7 +33,7 @@ class NVD:
         while True:
             url = f"{self.CVE_STEM}?startIndex={offset}"
             if last_mod_start_date:
-                dtstart = (last_mod_start_date + timedelta(microseconds=1000)).isoformat()
+                dtstart = last_mod_start_date.isoformat()
                 dtend = datetime.utcnow().replace(tzinfo=timezone.utc).isoformat()
                 url += f"&lastModStartDate={urlquote(dtstart)}&lastModEndDate={urlquote(dtend)}"
                 logger.info(f"Querying from {offset} - {limit} and {dtstart} - {dtend}")
@@ -74,7 +73,7 @@ class NVD:
         while True:
             url = f"{self.CPE_STEM}?startIndex={offset}"
             if last_mod_start_date:
-                dtstart = (last_mod_start_date + timedelta(microseconds=1000)).isoformat()
+                dtstart = last_mod_start_date.isoformat()
                 dtend = datetime.utcnow().replace(tzinfo=timezone.utc).isoformat()
                 url += f"&lastModStartDate={urlquote(dtstart)}&lastModEndDate={urlquote(dtend)}"
                 logger.info(f"Querying from {offset} - {limit} and {dtstart} - {dtend}")
