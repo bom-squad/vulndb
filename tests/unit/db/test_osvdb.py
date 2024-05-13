@@ -113,12 +113,12 @@ class TestOSVDB:
         last_modified = osvdb.last_modified()
         assert last_modified
         assert last_modified.replace(microsecond=0) == datetime.fromisoformat(
-            "2023-10-27T05:25:38Z"
+            "2023-10-27T05:25:38+00:00"
         )
 
     def test_last_modified_in_ecosystem(self, osv_examples: Path) -> None:
         expected = {
-            "crates.io": datetime.fromisoformat("2023-10-27T05:25:38Z"),
+            "crates.io": datetime.fromisoformat("2023-10-27T05:25:38+00:00"),
             "conan": None,
         }
         for ecosystem in expected.keys():
