@@ -2,8 +2,10 @@ import json
 import logging
 import time
 from datetime import datetime
+from datetime import timezone
 from typing import Generator
 from typing import Optional
+from urllib.parse import quote as urlquote
 
 import requests
 from retry import retry
@@ -31,10 +33,10 @@ class NVD:
         while True:
             url = f"{self.CVE_STEM}?startIndex={offset}"
             if last_mod_start_date:
-                url += f"&lastModStartDate={last_mod_start_date.isoformat()}&lastModEndDate={datetime.now().isoformat()}"
-                logger.info(
-                    f"Querying from {offset} - {limit} and {last_mod_start_date.isoformat()} - {datetime.now().isoformat()}"
-                )
+                dtstart = last_mod_start_date.isoformat()
+                dtend = datetime.now(timezone.utc).isoformat()
+                url += f"&lastModStartDate={urlquote(dtstart)}&lastModEndDate={urlquote(dtend)}"
+                logger.info(f"Querying from {offset} - {limit} and {dtstart} - {dtend}")
             headers = {"Accept": "application/json"}
             if config.nvd_api_key:
                 headers["apiKey"] = config.nvd_api_key
@@ -71,10 +73,10 @@ class NVD:
         while True:
             url = f"{self.CPE_STEM}?startIndex={offset}"
             if last_mod_start_date:
-                url += f"&lastModStartDate={last_mod_start_date.isoformat()}&lastModEndDate={datetime.now().isoformat()}"
-                logger.info(
-                    f"Querying from {offset} - {limit} and {last_mod_start_date.isoformat()} - {datetime.now().isoformat()}"
-                )
+                dtstart = last_mod_start_date.isoformat()
+                dtend = datetime.now(timezone.utc).isoformat()
+                url += f"&lastModStartDate={urlquote(dtstart)}&lastModEndDate={urlquote(dtend)}"
+                logger.info(f"Querying from {offset} - {limit} and {dtstart} - {dtend}")
             headers = {"Accept": "application/json"}
             if config.nvd_api_key:
                 headers["apiKey"] = config.nvd_api_key
