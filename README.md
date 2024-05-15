@@ -8,21 +8,17 @@ may evolve to incorporate additional datasets, or serve further use cases as we 
 
 ## Pre-requisites
 
-1. You will need a postgres database installed. See 'admin' CLI commands below to provision
-   or generate provisioning SQL commands based on the database configuration. If you are running as
-   a user with administrative database privileges to a local db instance, and you have configured
-   username, password, and datbase in an active vulndb configuration, the quick start command is 'vulndb admin create_all'.
-2. You will need poetry and poethepoet installed to build from source. pyenv or another environment
+1. You will need poetry and poethepoet installed to build from source. pyenv or another environment
    manager is recommended.
-3. You may optionally acquire an API key for the National Vulnerability Database
+2. You may optionally acquire an API key for the National Vulnerability Database
 
 ## Installation
 
-1. Create the database instance:
+1. Copy src/bomsquad/vulndb/config.toml to ~/.vulndb/config.toml and edit to match your evironment
+2. Create the database instance:
 ```
 $ vulndb admin create
 ```
-3. Copy config.toml to ~/.vulndb/config.toml and edit to match your evironment
 
 ## CLI
 
@@ -35,7 +31,7 @@ The vulndb cli exposes the following commands:
 ```
 $ vulndb admin create --help
 
- Usage: vulndb admin create_all [OPTIONS]
+ Usage: vulndb admin create [OPTIONS]
 
  Create schema, tables, indices, and user for active configuration.
 
@@ -47,9 +43,9 @@ $ vulndb admin create --help
 #### drop
 
 ```
-$ vulndb admin drop_all --help
+$ vulndb admin drop --help
 
- Usage: vulndb admin drop_all [OPTIONS]
+ Usage: vulndb admin drop [OPTIONS]
 
  Drop schema, tables, indices, and user for active configuration.
 
@@ -64,7 +60,7 @@ $ vulndb admin drop_all --help
 
 #### ingest
 
-Ingest Vulnerability (CPE) and Product (CPE) records from the National Vulnerability Database (https://nvd.nist.gov).
+Ingest Vulnerability (CVE) and Product (CPE) records from the National Vulnerability Database (https://nvd.nist.gov).
 
 ```
 $ vulndb nvd ingest --help
@@ -73,7 +69,7 @@ Usage: vulndb nvd ingest [OPTIONS]
 Options:
   --scope TEXT      Ingest only cve or cpe
   --offset INTEGER  Offset into available entries to begin wtih  [default: 0]
-  --limit INTEGER   Limit the number of entries to ingest
+  --update    --no-update             Acquire records newer than current data [default: no-update]
   --help            Show this message and exit.
 ```
 
@@ -90,7 +86,6 @@ Usage: vulndb osv ingest [OPTIONS]
 Options:
   --ecosystem TEXT  Ingest only a single ecosystem
   --offset INTEGER  Offset into available entries to begin wtih  [default: 0]
-  --limit INTEGER   Limit the number of entries to ingest
   --help            Show this message and exit.
 ```
 
