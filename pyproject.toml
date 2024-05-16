@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "bomsquad-vulndb"
-version = "0.5.0"
+version = "0.6"
 description = "Compilation of the National Vulnerability Database, and all public OSV data sources"
 authors = ["Timothy M. Wyatt <tmw@appcensus.io>"]
 license = "Apache-2.0"
