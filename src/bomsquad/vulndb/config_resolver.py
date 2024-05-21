@@ -6,6 +6,8 @@ from typing import cast
 
 logger = logging.getLogger(__name__)
 
+default_config = cast(Path, resources.files("bomsquad.vulndb").joinpath("config.toml"))
+
 
 class ConfigResolver:
     @classmethod
@@ -19,4 +21,4 @@ class ConfigResolver:
             logger.info(f"Using config from {home_config}")
             return home_config
         logger.info("Using built-in default config")
-        return cast(Path, resources.files("bomsquad.vulndb").joinpath("config.toml"))
+        return default_config

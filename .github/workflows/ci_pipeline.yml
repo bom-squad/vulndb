@@ -42,10 +42,6 @@ jobs:
     - name: Build database
       if: ${{ github.event_name == 'workflow_dispatch' }}
       run: |
-        mkdir -p "$HOME/.vulndb/"
-        echo "[vulndb]" > "$HOME/.vulndb/config.toml"
-        echo "db.path = '~/.vulndb/vuln.db'" >> "$HOME/.vulndb/config.toml"
-        echo "request_delay = 5" >> "$HOME/.vulndb/config.toml"
         poetry run vulndb admin create
         poetry run vulndb nvd ingest
         poetry run vulndb osv ingest
