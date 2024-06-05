@@ -2,8 +2,8 @@ from typing import Optional
 
 import typer
 
+from bomsquad.vulndb.db.checkpoints import Checkpoints
 from bomsquad.vulndb.db.ingest import Ingest
-from bomsquad.vulndb.db.nvddb import NVDDB
 
 nvd_app = typer.Typer(name="nvd")
 osv_app = typer.Typer(name="osv")
@@ -15,11 +15,17 @@ def _nvd_ingest(
     offset: int = typer.Option(default=0, help="Offset into available entries to begin wtih"),
     update: bool = typer.Option(default=False, help="Acquire records newer than current data"),
 ) -> None:
-    db = NVDDB()
+    cp = Checkpoints()
     if scope == "cve" or scope is None:
-        Ingest.cve(offset, last_mod_start_date=db.cve_last_modified() if update else None)
+        first_ts = Ingest.cve(
+            offset, last_mod_start_date=cp.last_updated("cve") if update else None
+        )
+        cp.upsert("cve", first_ts)
     if scope == "cpe" or scope is None:
-        Ingest.cpe(offset, last_mod_start_date=db.cpe_last_modified() if update else None)
+        first_ts = Ingest.cpe(
+            offset, last_mod_start_date=cp.last_updated("cpe") if update else None
+        )
+        cp.upsert("cpe", first_ts)
 
 
 @osv_app.command(name="ingest")

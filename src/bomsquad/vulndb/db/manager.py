@@ -85,6 +85,13 @@ class DatabaseManager:
                 UNIQUE(purl, osv_id)
             )
             """,
+            """
+            CREATE TABLE checkpoints(
+                source VARCHAR(64) NOT NULL,
+                last_updated DATETIME NOT NULL,
+                UNIQUE(source)
+            )
+            """,
         ]
         indices = [
             """

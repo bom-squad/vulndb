@@ -1,11 +1,13 @@
 import logging
 from datetime import datetime
+from typing import cast
 from typing import Optional
 
 from bomsquad.vulndb.client.nvd import NVD
 from bomsquad.vulndb.client.osv import OSV
 from bomsquad.vulndb.db.nvddb import instance as nvddb
 from bomsquad.vulndb.db.osvdb import instance as osvdb
+from bomsquad.vulndb.utils import GenWrap
 
 logger = logging.getLogger(__name__)
 
@@ -16,20 +18,24 @@ class Ingest:
         cls,
         offset: int = 0,
         last_mod_start_date: Optional[datetime] = None,
-    ) -> None:
+    ) -> datetime:
         api = NVD()
-        for cve in api.vulnerabilities(offset, last_mod_start_date=last_mod_start_date):
+        gen = GenWrap(api.vulnerabilities(offset, last_mod_start_date=last_mod_start_date))
+        for cve in gen:
             nvddb.upsert_cve(cve)
+        return cast(datetime, gen.value)
 
     @classmethod
     def cpe(
         cls,
         offset: int = 0,
         last_mod_start_date: Optional[datetime] = None,
-    ) -> None:
+    ) -> datetime:
         api = NVD()
-        for cpe in api.products(offset, last_mod_start_date=last_mod_start_date):
+        gen = GenWrap(api.products(offset, last_mod_start_date=last_mod_start_date))
+        for cpe in gen:
             nvddb.upsert_cpe(cpe)
+        return cast(datetime, gen.value)
 
     @classmethod
     def all_osv(cls) -> None:

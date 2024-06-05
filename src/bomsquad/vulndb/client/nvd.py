@@ -28,8 +28,9 @@ class NVD:
         limit: Optional[int] = None,
         last_mod_start_date: Optional[datetime] = None,
         **kwargs: str,
-    ) -> Generator[CVE, None, None]:
+    ) -> Generator[CVE, None, datetime]:
         total_results = 0
+        first_ts = None
         while True:
             url = f"{self.CVE_STEM}?startIndex={offset}"
             if last_mod_start_date:
@@ -46,6 +47,8 @@ class NVD:
                 r.raise_for_status()
 
             jres = json.loads(r.text)
+            if first_ts is None:
+                first_ts = datetime.fromisoformat(jres["timestamp"])
             if jres["totalResults"] > 0:
                 logger.info(
                     f"Materializing CVE {offset}-{offset + jres['resultsPerPage']} / {jres['totalResults']}"
@@ -55,12 +58,15 @@ class NVD:
                 total_results += 1
                 offset += 1
                 if limit and total_results >= limit:
-                    return
+                    break
 
             if jres["resultsPerPage"] <= 0:
-                return
+                break
 
             time.sleep(config.request_delay)
+
+        assert first_ts
+        return first_ts
 
     @retry(Exception, backoff=1, tries=10, max_delay=5, logger=logger)
     def products(
@@ -68,8 +74,9 @@ class NVD:
         offset: int = 0,
         limit: Optional[int] = None,
         last_mod_start_date: Optional[datetime] = None,
-    ) -> Generator[CPE, None, None]:
+    ) -> Generator[CPE, None, datetime]:
         total_results = 0
+        first_ts = None
         while True:
             url = f"{self.CPE_STEM}?startIndex={offset}"
             if last_mod_start_date:
@@ -86,6 +93,8 @@ class NVD:
                 r.raise_for_status()
 
             jres = json.loads(r.text)
+            if first_ts is None:
+                first_ts = datetime.fromisoformat(jres["timestamp"])
             if jres["totalResults"] > 0:
                 logger.info(
                     f"Materializing CPE {offset}-{offset + jres['resultsPerPage']} / {jres['totalResults']}"
@@ -95,9 +104,12 @@ class NVD:
                 total_results += 1
                 offset += 1
                 if limit and total_results >= limit:
-                    return
+                    break
 
             if jres["resultsPerPage"] <= 0:
-                return
+                break
 
             time.sleep(config.request_delay)
+
+        assert first_ts
+        return first_ts

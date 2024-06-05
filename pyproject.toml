@@ -47,6 +47,7 @@ datamodel-code-generator = {extras = ["http"], version = ">=0.21.0"}
 types-retry = "^0.9.9.3"
 types-requests = "^2.31.0.1"
 polyfactory = "^2.11.0"
+responses = "^0.25.0"
 
 [tool.black]
 line-length = 100
