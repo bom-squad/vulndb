@@ -12,19 +12,14 @@ osv_app = typer.Typer(name="osv")
 @nvd_app.command(name="ingest")
 def _nvd_ingest(
     scope: Optional[str] = typer.Option(default=None, help="Ingest only cve or cpe "),
-    offset: int = typer.Option(default=0, help="Offset into available entries to begin wtih"),
     update: bool = typer.Option(default=False, help="Acquire records newer than current data"),
 ) -> None:
     cp = Checkpoints()
     if scope == "cve" or scope is None:
-        first_ts = Ingest.cve(
-            offset, last_mod_start_date=cp.last_updated("cve") if update else None
-        )
+        first_ts = Ingest.cve(last_mod_start_date=cp.last_updated("cve") if update else None)
         cp.upsert("cve", first_ts)
     if scope == "cpe" or scope is None:
-        first_ts = Ingest.cpe(
-            offset, last_mod_start_date=cp.last_updated("cpe") if update else None
-        )
+        first_ts = Ingest.cpe(last_mod_start_date=cp.last_updated("cpe") if update else None)
         cp.upsert("cpe", first_ts)
 
 
