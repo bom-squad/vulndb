@@ -1,41 +1,62 @@
 import logging
 from datetime import datetime
+from typing import Any
 from typing import cast
+from typing import Generator
 from typing import Optional
 
 from bomsquad.vulndb.client.nvd import NVD
 from bomsquad.vulndb.client.osv import OSV
+from bomsquad.vulndb.db.checkpoints import Checkpoints
 from bomsquad.vulndb.db.nvddb import instance as nvddb
 from bomsquad.vulndb.db.osvdb import instance as osvdb
-from bomsquad.vulndb.utils import GenWrap
 
 logger = logging.getLogger(__name__)
+
+
+class GenWrap:
+    def __init__(self, gen: Generator[Any, Any, Any]) -> None:
+        self.gen = gen
+
+    def __iter__(self) -> Any:
+        self.value = yield from self.gen
+        return self.value
 
 
 class Ingest:
     @classmethod
     def cve(
         cls,
-        offset: int = 0,
-        last_mod_start_date: Optional[datetime] = None,
-    ) -> datetime:
+        update: bool = False,
+    ) -> None:
         api = NVD()
-        gen = GenWrap(api.vulnerabilities(offset, last_mod_start_date=last_mod_start_date))
+        cp = Checkpoints()
+        gen = GenWrap(
+            api.vulnerabilities(
+                offset=0, last_mod_start_date=cp.last_updated("cve") if update else None
+            )
+        )
         for cve in gen:
             nvddb.upsert_cve(cve)
-        return cast(datetime, gen.value)
+        first_ts = cast(datetime, gen.value)
+        if first_ts:
+            cp.upsert("cve", first_ts)
 
     @classmethod
     def cpe(
         cls,
-        offset: int = 0,
-        last_mod_start_date: Optional[datetime] = None,
-    ) -> datetime:
+        update: bool = False,
+    ) -> None:
         api = NVD()
-        gen = GenWrap(api.products(offset, last_mod_start_date=last_mod_start_date))
+        cp = Checkpoints()
+        gen = GenWrap(
+            api.products(offset=0, last_mod_start_date=cp.last_updated("cpe") if update else None)
+        )
         for cpe in gen:
             nvddb.upsert_cpe(cpe)
-        return cast(datetime, gen.value)
+        first_ts = cast(datetime, gen.value)
+        if first_ts:
+            cp.upsert("cpe", first_ts)
 
     @classmethod
     def all_osv(cls) -> None:
