@@ -40,6 +40,7 @@ class TestIngest:
     @pytest.mark.parametrize("update", [False, False, False, True, True])
     def test_cve_api_args(self, update: bool) -> None:
         with patch("bomsquad.vulndb.db.ingest.NVD.vulnerabilities") as vulns:
+            vulns.return_value = iter([])
             Ingest.cve(update=update)
             assert vulns.call_count == 1
             args, kwargs = vulns.call_args
@@ -58,6 +59,7 @@ class TestIngest:
     @pytest.mark.parametrize("update", [False, False, False, True, True])
     def test_cpe_api_args(self, update: bool) -> None:
         with patch("bomsquad.vulndb.db.ingest.NVD.products") as products:
+            products.return_value = iter([])
             Ingest.cpe(update=update)
             assert products.call_count == 1
             args, kwargs = products.call_args

@@ -64,15 +64,15 @@ def test_data(
 ) -> None:
     from bomsquad.vulndb.db.ingest import Ingest
 
-    def patched_vulns(*args: Any, **kwargs: Any) -> Generator[CVE, None, datetime]:
+    def patched_vulns(*args: Any, **kwargs: Any) -> Generator[datetime | CVE, None, None]:
+        yield datetime.utcnow()
         for path in cve_examples.iterdir():
             yield CVE.model_validate(json.loads(path.read_text()))
-        return datetime.utcnow()
 
-    def patched_products(*args: Any, **kwargs: Any) -> Generator[CPE, None, datetime]:
+    def patched_products(*args: Any, **kwargs: Any) -> Generator[datetime | CPE, None, None]:
+        yield datetime.utcnow()
         for path in cpe_examples.iterdir():
             yield CPE.model_validate(json.loads(path.read_text()))
-        return datetime.utcnow()
 
     with patch("bomsquad.vulndb.db.ingest.NVD.vulnerabilities") as vulns:
         vulns.side_effect = patched_vulns
