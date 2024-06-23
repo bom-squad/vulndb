@@ -1,0 +1,1 @@
+{"cpe":{"deprecated":true,"cpeName":"cpe:2.3:a:mit:kerberos:5:*:*:*:*:*:*:*","cpeNameId":"1903BA93-0AA8-4399-BC28-63932067CF21","lastModified":"2020-01-21T15:44:35.647","created":"2007-08-23T21:05:57.937","titles":[{"title":"MIT Kerberos 5","lang":"en"}],"deprecatedBy":[{"cpeName":"cpe:2.3:a:mit:kerberos_5:-:*:*:*:*:*:*:*","cpeNameId":"DE2C3020-BDF8-4580-A269-A6A91DDFA498"}]}}

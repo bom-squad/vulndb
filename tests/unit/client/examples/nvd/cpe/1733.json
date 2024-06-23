@@ -1,0 +1,1 @@
+{"cpe":{"deprecated":true,"cpeName":"cpe:2.3:a:mysql:mysql:-:*:*:*:*:*:*:*","cpeNameId":"B61107F7-B986-4B42-8232-4242D092A449","lastModified":"2019-10-07T16:38:07.647","created":"2007-08-23T21:05:57.937","titles":[{"title":"MySQL MySQL","lang":"en"}],"deprecatedBy":[{"cpeName":"cpe:2.3:a:oracle:mysql:-:*:*:*:*:*:*:*","cpeNameId":"A6D713E3-2242-40F7-8F3D-A7924C89CFD9"}]}}

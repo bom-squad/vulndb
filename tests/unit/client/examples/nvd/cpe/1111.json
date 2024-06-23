@@ -1,0 +1,1 @@
+{"cpe":{"deprecated":true,"cpeName":"cpe:2.3:a:gnu:zlib:-:*:*:*:*:*:*:*","cpeNameId":"536A9D4F-5B80-49E3-B847-40BC979D7232","lastModified":"2022-06-22T16:40:44.440","created":"2007-08-23T21:05:57.937","titles":[{"title":"GNU zlib","lang":"en"}],"deprecatedBy":[{"cpeName":"cpe:2.3:a:zlib:zlib:-:*:*:*:*:*:*:*","cpeNameId":"C630F077-4AFD-461C-A632-D1EB36F1B91E"}]}}
