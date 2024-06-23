@@ -59,7 +59,7 @@ class TestVulnerabilities:
             # Filter based on lastModified
             for cve in self.cve_examples.iterdir():
                 cve_json = json.loads(cve.read_text())
-                lastmod = cve_json["lastModified"]
+                lastmod = datetime.fromisoformat(cve_json["cve"]["lastModified"])
                 dt = lastmod.replace(tzinfo=timezone.utc)
                 if dt >= lastModStartDate and dt < lastModEndDate:
                     if totalResults >= startIndex and vulns_len < pageLimit:
@@ -94,6 +94,23 @@ class TestVulnerabilities:
             cve = next(gen)
             cve_json = json.loads(cve_file.read_text())
             assert cve == CVE.model_validate(cve_json["cve"])
+
+    @responses.activate
+    def test_ingest_update(self) -> None:
+        responses.add_callback(responses.GET, re.compile(".*"), callback=self.response_cb)
+        self.timestamps = []
+        nvd = NVD()
+        lastmod = datetime.fromisoformat("2018-10-12T21:29:34.903")
+        gen = nvd.vulnerabilities(offset=0, limit=None, last_mod_start_date=lastmod)
+        dt = cast(datetime, next(gen))
+        assert dt == self.timestamps[0]
+
+        for cve_file in self.cve_examples.iterdir():
+            cve_json = json.loads(cve_file.read_text())
+            expected_cve = CVE.model_validate(cve_json["cve"])
+            if expected_cve.lastModified >= lastmod:
+                cve = next(gen)
+                assert cve == expected_cve
 
 
 class TestProducts:
@@ -137,7 +154,7 @@ class TestProducts:
             # Filter based on lastModified
             for cpe in self.cpe_examples.iterdir():
                 cpe_json = json.loads(cpe.read_text())
-                lastmod = cpe_json["lastModified"]
+                lastmod = datetime.fromisoformat(cpe_json["cpe"]["lastModified"])
                 dt = lastmod.replace(tzinfo=timezone.utc)
                 if dt >= lastModStartDate and dt < lastModEndDate:
                     if totalResults >= startIndex and products_len < pageLimit:
@@ -172,3 +189,20 @@ class TestProducts:
             cpe = next(gen)
             cpe_json = json.loads(cpe_file.read_text())
             assert cpe == CPE.model_validate(cpe_json["cpe"])
+
+    @responses.activate
+    def test_ingest_update(self) -> None:
+        responses.add_callback(responses.GET, re.compile(".*"), callback=self.response_cb)
+        self.timestamps = []
+        nvd = NVD()
+        lastmod = datetime.fromisoformat("2018-10-12T21:29:34.903")
+        gen = nvd.products(offset=0, limit=None, last_mod_start_date=lastmod)
+        dt = cast(datetime, next(gen))
+        assert dt == self.timestamps[0]
+
+        for cpe_file in self.cpe_examples.iterdir():
+            cpe_json = json.loads(cpe_file.read_text())
+            expected_cpe = CPE.model_validate(cpe_json["cpe"])
+            if expected_cpe.lastModified >= lastmod:
+                cpe = next(gen)
+                assert cpe == expected_cpe
