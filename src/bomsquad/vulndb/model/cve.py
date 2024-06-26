@@ -1,8 +1,6 @@
+from __future__ import annotations
+
 from datetime import datetime
-from enum import Enum
-from typing import Dict
-from typing import List
-from typing import Optional
 from uuid import UUID
 
 from pydantic import BaseModel
@@ -10,21 +8,22 @@ from pydantic import BaseModel
 from bomsquad.vulndb.model.cvss20 import CVSS20
 from bomsquad.vulndb.model.cvss30 import CVSS30
 from bomsquad.vulndb.model.cvss31 import CVSS31
+from bomsquad.vulndb.model.nvd_enum import NVDEnum
 
 
-class CVEStatus(str, Enum):
-    RECEIVED = "Received"
-    AWAITING_ANALYSIS = "Awaiting Analysis"
-    UNDERGOING_ANALYSIS = "Undergoing Analysis"
-    ANALYZED = "Analyzed"
-    MODIFIED = "Modified"
-    DEFERRED = "Deferred"
-    REJECTED = "Rejected"
+class CVEStatus(NVDEnum):
+    RECEIVED = "RECEIVED"
+    AWAITING_ANALYSIS = "AWAITING_ANALYSIS"
+    UNDERGOING_ANALYSIS = "UNDERGOING_ANALYSIS"
+    ANALYZED = "ANALYZED"
+    MODIFIED = "MODIFIED"
+    DEFERRED = "DEFERRED"
+    REJECTED = "REJECTED"
 
 
-class Ordinal(str, Enum):
-    PRIMARY = "Primary"
-    SECONDARY = "Secondary"
+class Ordinal(NVDEnum):
+    PRIMARY = "PRIMARY"
+    SECONDARY = "SECONDARY"
 
 
 class CVSSv2(BaseModel):
@@ -34,42 +33,42 @@ class CVSSv2(BaseModel):
     baseSeverity: str
     exploitabilityScore: float
     impactScore: float
-    acInsufInfo: Optional[bool] = None
-    obtainAllPrivilege: Optional[bool] = None
-    obtainUserPrivilege: Optional[bool] = None
-    obtainOtherPrivilege: Optional[bool] = None
-    userInteractionRequired: Optional[bool] = None
+    acInsufInfo: bool | None = None
+    obtainAllPrivilege: bool | None = None
+    obtainUserPrivilege: bool | None = None
+    obtainOtherPrivilege: bool | None = None
+    userInteractionRequired: bool | None = None
 
 
 class CVSSv30(BaseModel):
     source: str
     type: Ordinal
     cvssData: CVSS30
-    exploitabilityScore: Optional[float] = None
-    impactScore: Optional[float] = None
+    exploitabilityScore: float | None = None
+    impactScore: float | None = None
 
 
 class CVSSv31(BaseModel):
     source: str
     type: Ordinal
     cvssData: CVSS31
-    exploitabilityScore: Optional[float] = None
-    impactScore: Optional[float]
+    exploitabilityScore: float | None = None
+    impactScore: float | None
 
 
 class Metrics(BaseModel):
-    cvssMetricV2: List[CVSSv2] = []
-    cvssMetricV30: List[CVSSv30] = []
-    cvssMetricV31: List[CVSSv31] = []
+    cvssMetricV2: list[CVSSv2] = []
+    cvssMetricV30: list[CVSSv30] = []
+    cvssMetricV31: list[CVSSv31] = []
 
 
 class Weakness(BaseModel):
     source: str
     type: str
-    description: List[Dict[str, str]] = []
+    description: list[dict[str, str]] = []
 
 
-class Operator(str, Enum):
+class Operator(NVDEnum):
     AND = "AND"
     OR = "OR"
 
@@ -85,21 +84,21 @@ class CPEMatch(BaseModel):
 
 
 class Node(BaseModel):
-    operator: Optional[Operator] = None
+    operator: Operator | None = None
     negate: bool = False
-    cpeMatch: List[CPEMatch] = []
+    cpeMatch: list[CPEMatch] = []
 
 
 class Config(BaseModel):
-    operator: Optional[Operator] = None
-    negate: Optional[bool] = False
-    nodes: List[Node]
+    operator: Operator | None = None
+    negate: bool | None = False
+    nodes: list[Node]
 
 
 class Reference(BaseModel):
-    url: Optional[str] = None
-    source: Optional[str] = None
-    tags: Optional[List[str]] = None
+    url: str | None = None
+    source: str | None = None
+    tags: list[str] | None = None
 
 
 class VendorComment(BaseModel):
@@ -114,12 +113,12 @@ class CVE(BaseModel):
     published: datetime
     lastModified: datetime
     vulnStatus: CVEStatus
-    descriptions: List[Dict[str, str]] = []
+    descriptions: list[dict[str, str]] = []
     metrics: Metrics
-    weaknesses: List[Weakness] = []
-    configurations: List[Config] = []
-    references: List[Reference] = []
-    vendorComments: List[VendorComment] = []
+    weaknesses: list[Weakness] = []
+    configurations: list[Config] = []
+    references: list[Reference] = []
+    vendorComments: list[VendorComment] = []
 
     def description(self, language: str = "en") -> str:
         selected: str = "None"
