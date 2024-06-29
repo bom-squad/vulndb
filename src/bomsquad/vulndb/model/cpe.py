@@ -1,10 +1,11 @@
 from datetime import datetime
-from enum import Enum
 from typing import List
 from typing import Optional
 from uuid import UUID
 
 from pydantic import BaseModel
+
+from bomsquad.vulndb.model.nvd_enum import NVDEnum
 
 
 class Title(BaseModel):
@@ -12,13 +13,13 @@ class Title(BaseModel):
     title: str
 
 
-class ReferenceType(str, Enum):
-    ADVISORY = "Advisory"
-    CHANGE_LOG = "Change Log"
-    PRODUCT = "Product"
-    PROJECT = "Project"
-    VENDOR = "Vendor"
-    VERSION = "Version"
+class ReferenceType(NVDEnum):
+    ADVISORY = "ADVISORY"
+    CHANGE_LOG = "CHANGE_LOG"
+    PRODUCT = "PRODUCT"
+    PROJECT = "PROJECT"
+    VENDOR = "VENDOR"
+    VERSION = "VERSION"
 
 
 class Reference(BaseModel):

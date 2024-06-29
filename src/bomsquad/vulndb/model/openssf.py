@@ -54,7 +54,7 @@ class Affected(BaseModel):
 
 
 class ReferenceType(str, Enum):
-    ADVISOR = "ADVISORY"
+    ADVISORY = "ADVISORY"
     ARTICLE = "ARTICLE"
     DETECTION = "DETECTION"
     DISCUSSION = "DISCUSSION"
