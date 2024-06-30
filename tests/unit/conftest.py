@@ -64,22 +64,20 @@ def test_data(
 ) -> None:
     from bomsquad.vulndb.db.ingest import Ingest
 
-    def patched_vulns(*args: Any, **kwargs: Any) -> Generator[datetime | CVE, None, None]:
-        yield datetime.utcnow()
-        for path in cve_examples.iterdir():
-            yield CVE.model_validate(json.loads(path.read_text()))
-
-    def patched_products(*args: Any, **kwargs: Any) -> Generator[datetime | CPE, None, None]:
-        yield datetime.utcnow()
-        for path in cpe_examples.iterdir():
-            yield CPE.model_validate(json.loads(path.read_text()))
-
     with patch("bomsquad.vulndb.db.ingest.NVD.vulnerabilities") as vulns:
-        vulns.side_effect = patched_vulns
+        vulns.return_value.first_ts = datetime.utcnow()
+        vulns.return_value.__iter__.return_value = [
+            CVE.model_validate(json.loads(path.read_text())) for path in cve_examples.iterdir()
+        ]
+
         Ingest.cve()
 
     with patch("bomsquad.vulndb.db.ingest.NVD.products") as products:
-        products.side_effect = patched_products
+        products.return_value.first_ts = datetime.utcnow()
+        products.return_value.__iter__.return_value = [
+            CPE.model_validate(json.loads(path.read_text())) for path in cpe_examples.iterdir()
+        ]
+
         Ingest.cpe()
 
     saved_ecosystems = OSV.ECOSYSTEMS

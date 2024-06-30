@@ -31,7 +31,8 @@ class TestIngest:
     def test_cve_api_args(self, update: bool) -> None:
         with patch("bomsquad.vulndb.db.ingest.NVD.vulnerabilities") as vulns:
             NullCVE = CVE.__new__(CVE)
-            vulns.return_value = iter([datetime.now(timezone.utc), NullCVE, NullCVE, NullCVE])
+            vulns.return_value.first_ts = datetime.now(timezone.utc)
+            vulns.return_value.__iter__.return_value = iter([NullCVE, NullCVE, NullCVE])
             with patch("bomsquad.vulndb.db.ingest.Checkpoints.upsert") as cp_upsert:
                 with patch("bomsquad.vulndb.db.ingest.nvddb.upsert_cve") as upsert_cve:
                     Ingest.cve(update=update)
@@ -56,7 +57,8 @@ class TestIngest:
     def test_cpe_api_args(self, update: bool) -> None:
         with patch("bomsquad.vulndb.db.ingest.NVD.products") as products:
             NullCPE = CPE.__new__(CPE)
-            products.return_value = iter([datetime.now(timezone.utc), NullCPE, NullCPE, NullCPE])
+            products.return_value.first_ts = datetime.now(timezone.utc)
+            products.return_value.__iter__.return_value = iter([NullCPE, NullCPE, NullCPE])
             with patch("bomsquad.vulndb.db.ingest.Checkpoints.upsert") as cp_upsert:
                 with patch("bomsquad.vulndb.db.ingest.nvddb.upsert_cpe") as upsert_cpe:
                     Ingest.cpe(update=update)

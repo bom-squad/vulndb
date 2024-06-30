@@ -80,25 +80,47 @@ class CVEResultSet(NVDResultSet[CVE]):
         return CVE.model_validate(result["cve"])
 
 
+class NVDResultGen:
+    result_sets: Generator[NVDResultSet, None, None] = None
+    current: NVDResultSet = None
+    first_ts: datetime = None
+
+    def __init__(self, result_sets: Generator[NVDResultSet, None, None]) -> None:
+        self.result_sets = result_sets
+        self.current = next(self.result_sets)
+
+    def __iter__(self) -> Iterator[CVE | CPE]:
+        return self
+
+    def __next__(self) -> CVE | CPE:
+        try:
+            if self.first_ts is None:
+                self.first_ts = self.current.timestamp
+            return next(self.current)
+        except StopIteration:
+            self.current = next(self.result_sets)
+            return next(self)
+
 class NVD:
     CVE_STEM = "https://services.nvd.nist.gov/rest/json/cves/2.0"
     CPE_STEM = "https://services.nvd.nist.gov/rest/json/cpes/2.0"
 
     @retry(Exception, backoff=1, tries=10, max_delay=5, logger=logger)
-    def vulnerabilities(
+    def _vulnerabilities(
         self,
         offset: int = 0,
         limit: Optional[int] = None,
         last_mod_start_date: Optional[datetime] = None,
-        **kwargs: str,
     ) -> Generator[NVDResultSet[CVE], None, None]:
         while True:
             url = f"{self.CVE_STEM}?startIndex={offset}"
+            log_msg = f"Querying from index: {offset} to {limit}"
             if last_mod_start_date:
                 dtstart = last_mod_start_date.isoformat()
                 dtend = datetime.now(timezone.utc).isoformat()
                 url += f"&lastModStartDate={urlquote(dtstart)}&lastModEndDate={urlquote(dtend)}"
-                logger.info(f"Querying from {offset} - {limit} and {dtstart} - {dtend}")
+                log_msg += f" and date: {dtstart} to {dtend}"
+            logger.info(log_msg)
             headers = {"Accept": "application/json"}
             if config.nvd_api_key:
                 headers["apiKey"] = config.nvd_api_key
@@ -109,21 +131,28 @@ class NVD:
 
             results = CVEResultSet("vulnerabilities", json.loads(r.text), limit)
             if results.total_results > 0 and results.results_per_page > 0:
+                offset += results.results_per_page
                 yield results
             else:
                 break
 
             time.sleep(config.request_delay)
 
-    @retry(Exception, backoff=1, tries=10, max_delay=5, logger=logger)
-    def products(
+    def vulnerabilities(
         self,
         offset: int = 0,
         limit: Optional[int] = None,
         last_mod_start_date: Optional[datetime] = None,
-    ) -> Generator[datetime | CPE, None, None]:
-        total_results = 0
-        first_ts = None
+    ) -> NVDResultGen:
+        return NVDResultGen(self._vulnerabilities(offset, limit, last_mod_start_date))
+
+    @retry(Exception, backoff=1, tries=10, max_delay=5, logger=logger)
+    def _products(
+        self,
+        offset: int = 0,
+        limit: Optional[int] = None,
+        last_mod_start_date: Optional[datetime] = None,
+    ) -> Generator[NVDResultSet[CPE], None, None]:
         while True:
             url = f"{self.CPE_STEM}?startIndex={offset}"
             if last_mod_start_date:
@@ -139,22 +168,19 @@ class NVD:
             if r.status_code != 200:
                 r.raise_for_status()
 
-            jres = json.loads(r.text)
-            if first_ts is None:
-                first_ts = datetime.fromisoformat(jres["timestamp"])
-                yield first_ts
-            if jres["totalResults"] > 0:
-                logger.info(
-                    f"Materializing CPE {offset}-{offset + jres['resultsPerPage']} / {jres['totalResults']}"
-                )
-            for jso in jres["products"]:
-                yield CPE.parse_obj(jso["cpe"])
-                total_results += 1
-                offset += 1
-                if limit and total_results >= limit:
-                    return
-
-            if jres["resultsPerPage"] <= 0:
-                return
+            results = CPEResultSet("products", json.loads(r.text), limit)
+            if results.total_results > 0 and results.results_per_page > 0:
+                offset += results.results_per_page
+                yield results
+            else:
+                break
 
             time.sleep(config.request_delay)
+
+    def products(
+        self,
+        offset: int = 0,
+        limit: Optional[int] = None,
+        last_mod_start_date: Optional[datetime] = None,
+    ) -> NVDResultGen:
+        return NVDResultGen(self._products(offset, limit, last_mod_start_date))

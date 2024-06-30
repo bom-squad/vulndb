@@ -1,6 +1,5 @@
 import logging
 from datetime import datetime
-from typing import cast
 from typing import Optional
 
 from bomsquad.vulndb.client.nvd import NVD
@@ -25,11 +24,10 @@ class Ingest:
         gen = api.vulnerabilities(
             offset=0, last_mod_start_date=cp.last_updated("cve") if update else None
         )
-        first_ts = next(gen, None)
-        if first_ts:
-            cp.upsert("cve", cast(datetime, first_ts))
-            for cve in gen:
-                nvddb.upsert_cve(cast(CVE, cve))
+
+        for cve in gen:
+            nvddb.upsert_cve(cve)
+        cp.upsert("cve", gen.first_ts)
 
     @classmethod
     def cpe(
@@ -39,11 +37,10 @@ class Ingest:
         api = NVD()
         cp = Checkpoints()
         gen = api.products(offset=0, last_mod_start_date=cp.last_updated("cpe") if update else None)
-        first_ts = next(gen, None)
-        if first_ts:
-            cp.upsert("cpe", cast(datetime, first_ts))
-            for cpe in gen:
-                nvddb.upsert_cpe(cast(CPE, cpe))
+
+        for cpe in gen:
+            nvddb.upsert_cpe(cpe)
+        cp.upsert("cpe", gen.first_ts)
 
     @classmethod
     def all_osv(cls) -> None:
