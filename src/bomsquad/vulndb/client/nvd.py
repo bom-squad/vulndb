@@ -81,25 +81,25 @@ class CVEResultSet(NVDResultSet[CVE]):
 
 
 class NVDResultGen:
-    result_sets: Generator[NVDResultSet, None, None] = None
-    current: NVDResultSet = None
-    first_ts: datetime = None
+    result_sets: Generator[NVDResultSet[Any], None, None]
+    current: NVDResultSet[Any]
+    first_ts: datetime
 
-    def __init__(self, result_sets: Generator[NVDResultSet, None, None]) -> None:
+    def __init__(self, result_sets: Generator[NVDResultSet[Any], None, None]) -> None:
         self.result_sets = result_sets
         self.current = next(self.result_sets)
+        self.first_ts = self.current.timestamp
 
-    def __iter__(self) -> Iterator[CVE | CPE]:
+    def __iter__(self) -> Iterator[Any]:
         return self
 
-    def __next__(self) -> CVE | CPE:
+    def __next__(self) -> Any:
         try:
-            if self.first_ts is None:
-                self.first_ts = self.current.timestamp
             return next(self.current)
         except StopIteration:
             self.current = next(self.result_sets)
             return next(self)
+
 
 class NVD:
     CVE_STEM = "https://services.nvd.nist.gov/rest/json/cves/2.0"

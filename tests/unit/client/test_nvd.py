@@ -4,7 +4,6 @@ import re
 from datetime import datetime
 from datetime import timezone
 from pathlib import Path
-from typing import cast
 from urllib.parse import parse_qs
 from urllib.parse import urlparse
 

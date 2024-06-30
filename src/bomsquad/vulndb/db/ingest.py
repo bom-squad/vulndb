@@ -1,5 +1,4 @@
 import logging
-from datetime import datetime
 from typing import Optional
 
 from bomsquad.vulndb.client.nvd import NVD
@@ -7,8 +6,6 @@ from bomsquad.vulndb.client.osv import OSV
 from bomsquad.vulndb.db.checkpoints import Checkpoints
 from bomsquad.vulndb.db.nvddb import instance as nvddb
 from bomsquad.vulndb.db.osvdb import instance as osvdb
-from bomsquad.vulndb.model.cpe import CPE
-from bomsquad.vulndb.model.cve import CVE
 
 logger = logging.getLogger(__name__)
 
