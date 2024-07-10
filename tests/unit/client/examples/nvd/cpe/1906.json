@@ -1,1 +1,0 @@
-{"cpe":{"deprecated":false,"cpeName":"cpe:2.3:o:openbsd:openbsd:-:*:*:*:*:*:*:*","cpeNameId":"852E6EE2-EAA8-42DB-BAF8-F6B34B80192D","lastModified":"2011-08-30T14:03:22.313","created":"2007-08-23T21:05:57.937","titles":[{"title":"OpenBSD","lang":"en"}],"deprecates":[{"cpeName":"cpe:2.3:a:openbsd:openbsd:-:*:*:*:*:*:*:*","cpeNameId":"570ADCF3-444C-451F-BBD4-758302F3D45D"}]}}

@@ -61,23 +61,20 @@ def osv_examples() -> Path:
 def test_data(
     cve_examples: Path, cpe_examples: Path, osv_examples: Path, test_database: None
 ) -> None:
+    from bomsquad.vulndb.db.checkpoints import Checkpoints
     from bomsquad.vulndb.db.ingest import Ingest
+    from bomsquad.vulndb.db.nvddb import instance as nvddb
 
-    with patch("bomsquad.vulndb.db.ingest.NVD.vulnerabilities") as vulns:
-        vulns.return_value.first_ts = datetime.utcnow()
-        vulns.return_value.__iter__.return_value = [
-            CVE.model_validate(json.loads(path.read_text())) for path in cve_examples.iterdir()
-        ]
+    cp = Checkpoints()
+    for path in cve_examples.iterdir():
+        cve = CVE.model_validate(json.loads(path.read_text()))
+        nvddb.upsert_cve(cve)
+    cp.upsert("cve", datetime.utcnow())
 
-        Ingest.cve()
-
-    with patch("bomsquad.vulndb.db.ingest.NVD.products") as products:
-        products.return_value.first_ts = datetime.utcnow()
-        products.return_value.__iter__.return_value = [
-            CPE.model_validate(json.loads(path.read_text())) for path in cpe_examples.iterdir()
-        ]
-
-        Ingest.cpe()
+    for path in cpe_examples.iterdir():
+        cpe = CPE.model_validate(json.loads(path.read_text()))
+        nvddb.upsert_cpe(cpe)
+    cp.upsert("cpe", datetime.utcnow())
 
     saved_ecosystems = OSV.ECOSYSTEMS
     OSV.ECOSYSTEMS = [ecosystem.name for ecosystem in osv_examples.iterdir()]

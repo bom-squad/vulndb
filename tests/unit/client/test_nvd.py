@@ -18,13 +18,14 @@ logger = logging.getLogger(__name__)
 
 
 class TestVulnerabilities:
-    cve_examples = Path(__file__).parent / "examples/nvd/cve/"
+    example_file = Path(__file__).parent / "examples/nvd/cve.json"
+    cve_examples = json.loads(example_file.read_text())
     timestamps: list[datetime] = []
 
     def response_cb(self, req: PreparedRequest) -> tuple[int, dict[str, str], str]:
         status = 200
         headers: dict[str, str] = {}
-        pageLimit = 1000
+        pageLimit = 5
         urlquery = parse_qs(urlparse(req.path_url).query)
         startIndex = int(urlquery["startIndex"][-1])
         resultsPerPage = (
@@ -58,20 +59,18 @@ class TestVulnerabilities:
         totalResults = 0
         if lastModStartDate and lastModEndDate:
             # Filter based on lastModified
-            for cve in self.cve_examples.iterdir():
-                cve_json = json.loads(cve.read_text())
-                lastmod = datetime.fromisoformat(cve_json["cve"]["lastModified"])
+            for cve in self.cve_examples:
+                lastmod = datetime.fromisoformat(cve["cve"]["lastModified"])
                 dt = lastmod.replace(tzinfo=timezone.utc)
                 if dt >= lastModStartDate and dt < lastModEndDate:
                     if totalResults >= startIndex and vulns_len < pageLimit:
-                        vulns.append(cve_json)
+                        vulns.append(cve)
                         vulns_len += 1
                     totalResults += 1
         else:
-            for cve in self.cve_examples.iterdir():
+            for cve in self.cve_examples:
                 if totalResults >= startIndex and vulns_len < pageLimit:
-                    cve_json = json.loads(cve.read_text())
-                    vulns.append(cve_json)
+                    vulns.append(cve)
                     vulns_len += 1
                 totalResults += 1
 
@@ -88,12 +87,15 @@ class TestVulnerabilities:
         self.timestamps = []
         nvd = NVD()
         gen = nvd.vulnerabilities(offset=0, limit=None, last_mod_start_date=None)
+        expected_cves = iter(self.cve_examples)
 
-        for cve_file in self.cve_examples.iterdir():
-            cve = next(gen)
-            assert gen.first_ts == self.timestamps[0]
-            cve_json = json.loads(cve_file.read_text())
-            assert cve == CVE.model_validate(cve_json["cve"])
+        result_count = 0
+        for resultset in gen:
+            assert resultset.timestamp == self.timestamps[result_count]
+            result_count += 1
+            for cve in resultset:
+                expected_cve = CVE.model_validate(next(expected_cves)["cve"])
+                assert cve == expected_cve
 
     @responses.activate
     def test_ingest_update(self) -> None:
@@ -102,24 +104,29 @@ class TestVulnerabilities:
         nvd = NVD()
         lastmod = datetime.fromisoformat("2018-10-12T21:29:34.903")
         gen = nvd.vulnerabilities(offset=0, limit=None, last_mod_start_date=lastmod)
+        expected_cves = iter(self.cve_examples)
 
-        for cve_file in self.cve_examples.iterdir():
-            cve_json = json.loads(cve_file.read_text())
-            expected_cve = CVE.model_validate(cve_json["cve"])
-            if expected_cve.lastModified >= lastmod:
-                cve = next(gen)
-                assert gen.first_ts == self.timestamps[0]
-                assert cve == expected_cve
+        result_count = 0
+        for resultset in gen:
+            assert resultset.timestamp == self.timestamps[result_count]
+            result_count += 1
+            for cve in resultset:
+                while True:
+                    expected_cve = CVE.model_validate(next(expected_cves)["cve"])
+                    if expected_cve.lastModified >= lastmod:
+                        assert cve == expected_cve
+                        break
 
 
 class TestProducts:
-    cpe_examples = Path(__file__).parent / "examples/nvd/cpe/"
+    example_file = Path(__file__).parent / "examples/nvd/cpe.json"
+    cpe_examples = json.loads(example_file.read_text())
     timestamps: list[datetime] = []
 
     def response_cb(self, req: PreparedRequest) -> tuple[int, dict[str, str], str]:
         status = 200
         headers: dict[str, str] = {}
-        pageLimit = 1000
+        pageLimit = 5
         urlquery = parse_qs(urlparse(req.path_url).query)
         startIndex = int(urlquery["startIndex"][-1])
         resultsPerPage = (
@@ -153,20 +160,18 @@ class TestProducts:
         totalResults = 0
         if lastModStartDate and lastModEndDate:
             # Filter based on lastModified
-            for cpe in self.cpe_examples.iterdir():
-                cpe_json = json.loads(cpe.read_text())
-                lastmod = datetime.fromisoformat(cpe_json["cpe"]["lastModified"])
+            for cpe in self.cpe_examples:
+                lastmod = datetime.fromisoformat(cpe["cpe"]["lastModified"])
                 dt = lastmod.replace(tzinfo=timezone.utc)
                 if dt >= lastModStartDate and dt < lastModEndDate:
                     if totalResults >= startIndex and products_len < pageLimit:
-                        products.append(cpe_json)
+                        products.append(cpe)
                         products_len += 1
                     totalResults += 1
         else:
-            for cpe in self.cpe_examples.iterdir():
+            for cpe in self.cpe_examples:
                 if totalResults >= startIndex and products_len < pageLimit:
-                    cpe_json = json.loads(cpe.read_text())
-                    products.append(cpe_json)
+                    products.append(cpe)
                     products_len += 1
                 totalResults += 1
 
@@ -183,12 +188,15 @@ class TestProducts:
         self.timestamps = []
         nvd = NVD()
         gen = nvd.products(offset=0, limit=None, last_mod_start_date=None)
+        expected_cpes = iter(self.cpe_examples)
 
-        for cpe_file in self.cpe_examples.iterdir():
-            cpe = next(gen)
-            assert gen.first_ts == self.timestamps[0]
-            cpe_json = json.loads(cpe_file.read_text())
-            assert cpe == CPE.model_validate(cpe_json["cpe"])
+        result_count = 0
+        for resultset in gen:
+            assert resultset.timestamp == self.timestamps[result_count]
+            result_count += 1
+            for cpe in resultset:
+                expected_cpe = CPE.model_validate(next(expected_cpes)["cpe"])
+                assert cpe == expected_cpe
 
     @responses.activate
     def test_ingest_update(self) -> None:
@@ -197,11 +205,15 @@ class TestProducts:
         nvd = NVD()
         lastmod = datetime.fromisoformat("2018-10-12T21:29:34.903")
         gen = nvd.products(offset=0, limit=None, last_mod_start_date=lastmod)
+        expected_cpes = iter(self.cpe_examples)
 
-        for cpe_file in self.cpe_examples.iterdir():
-            cpe_json = json.loads(cpe_file.read_text())
-            expected_cpe = CPE.model_validate(cpe_json["cpe"])
-            if expected_cpe.lastModified >= lastmod:
-                cpe = next(gen)
-                assert gen.first_ts == self.timestamps[0]
-                assert cpe == expected_cpe
+        result_count = 0
+        for resultset in gen:
+            assert resultset.timestamp == self.timestamps[result_count]
+            result_count += 1
+            for cpe in resultset:
+                while True:
+                    expected_cpe = CPE.model_validate(next(expected_cpes)["cpe"])
+                    if expected_cpe.lastModified >= lastmod:
+                        assert cpe == expected_cpe
+                        break

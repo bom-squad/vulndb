@@ -1,1 +1,0 @@
-{"cpe":{"deprecated":false,"cpeName":"cpe:2.3:a:amanda:amanda:-:*:*:*:*:*:*:*","cpeNameId":"2E62A08B-038C-46CC-BE2B-A5697DB71B8F","lastModified":"2023-05-11T13:58:21.000","created":"2007-08-23T21:05:57.937","titles":[{"title":"AMANDA AMANDA","lang":"en"}],"refs":[{"ref":"https://github.com/zmanda/amanda","type":"Product"},{"ref":"http://www.amanda.org/","type":"Vendor"}]}}

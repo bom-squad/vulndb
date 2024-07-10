@@ -80,33 +80,12 @@ class CVEResultSet(NVDResultSet[CVE]):
         return CVE.model_validate(result["cve"])
 
 
-class NVDResultGen:
-    result_sets: Generator[NVDResultSet[Any], None, None]
-    current: NVDResultSet[Any]
-    first_ts: datetime
-
-    def __init__(self, result_sets: Generator[NVDResultSet[Any], None, None]) -> None:
-        self.result_sets = result_sets
-        self.current = next(self.result_sets)
-        self.first_ts = self.current.timestamp
-
-    def __iter__(self) -> Iterator[Any]:
-        return self
-
-    def __next__(self) -> Any:
-        try:
-            return next(self.current)
-        except StopIteration:
-            self.current = next(self.result_sets)
-            return next(self)
-
-
 class NVD:
     CVE_STEM = "https://services.nvd.nist.gov/rest/json/cves/2.0"
     CPE_STEM = "https://services.nvd.nist.gov/rest/json/cpes/2.0"
 
     @retry(Exception, backoff=1, tries=10, max_delay=5, logger=logger)
-    def _vulnerabilities(
+    def vulnerabilities(
         self,
         offset: int = 0,
         limit: Optional[int] = None,
@@ -138,16 +117,8 @@ class NVD:
 
             time.sleep(config.request_delay)
 
-    def vulnerabilities(
-        self,
-        offset: int = 0,
-        limit: Optional[int] = None,
-        last_mod_start_date: Optional[datetime] = None,
-    ) -> NVDResultGen:
-        return NVDResultGen(self._vulnerabilities(offset, limit, last_mod_start_date))
-
     @retry(Exception, backoff=1, tries=10, max_delay=5, logger=logger)
-    def _products(
+    def products(
         self,
         offset: int = 0,
         limit: Optional[int] = None,
@@ -176,11 +147,3 @@ class NVD:
                 break
 
             time.sleep(config.request_delay)
-
-    def products(
-        self,
-        offset: int = 0,
-        limit: Optional[int] = None,
-        last_mod_start_date: Optional[datetime] = None,
-    ) -> NVDResultGen:
-        return NVDResultGen(self._products(offset, limit, last_mod_start_date))
