@@ -68,7 +68,6 @@ Usage: vulndb nvd ingest [OPTIONS]
 
 Options:
   --scope TEXT      Ingest only cve or cpe
-  --offset INTEGER  Offset into available entries to begin wtih  [default: 0]
   --update    --no-update             Acquire records newer than current data [default: no-update]
   --help            Show this message and exit.
 ```
