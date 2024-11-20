@@ -53,3 +53,8 @@ jobs:
         key: ${{ github.head_ref }}.${{ github.sha }.db}
         path: |
           ~/.vulndb/vuln.db
+    - name: Upload asset to Release
+      uses: softprops/action-gh-release@v2
+      if: github.ref == 'refs/heads/master'
+      with:
+        files: ~/.vulndb/vuln.db
