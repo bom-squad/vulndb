@@ -1,12 +1,8 @@
 name: CI Pipeline
 
 on:
-  push:
-    branches: [ "**" ]
-  workflow_dispatch:
-
-permissions:
-  contents: read
+  schedule:
+    - cron: "0 8 * * *"
 
 jobs:
   build:
@@ -34,19 +30,20 @@ jobs:
     - name: Test
       run: |
         poetry run poe unit_test
-    - name: Store build artifacts
-      uses: actions/upload-artifact@v4
+    - name: Restore database 
+      uses: actions/cache/restore@v4
       with:
-        name: dist
-        path: dist/**
+        key: ${{ github.head_ref }}.${{ github.sha }.db}
+        path: |
+          ~/.vulndb/vuln.db
     - name: Build database
-      if: ${{ github.event_name == 'workflow_dispatch' }}
+      if: steps.restore-database.outputs.cache-hit
       run: |
         poetry run vulndb admin create
-        poetry run vulndb nvd ingest
+        poetry run vulndb nvd ingest --update
         poetry run vulndb osv ingest
         poetry run poe data_validation_test
-    - name: Save Database to Cache
+    - name: Save Updated Database
       id: cache-database-if-valid
       uses: actions/cache/save@v4
       with:
